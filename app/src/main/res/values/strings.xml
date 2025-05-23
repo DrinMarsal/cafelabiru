@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">cafelabiru</string>
+    <string name="title_login">Welcome!</string>
+    <string name="title_signup">Hi!</string>
+    <string name="title_sub_login">Sign in to continue</string>
+    <string name="title_sub_signup">Create your account</string>
+    <string name="tv_email">Email</string>
+    <string name="tv_password">Password</string>
+    <string name="tv_name">Name</string>
+    <string name="tv_forgot_password"><u>Lupa password?</u></string>
+    <string name="btn_login">Login</string>
+    <string name="btn_signup">Signup</string>
+    <string name="desc_login">Don`t have your account?</string>
+    <string name="desc_login_here"><u>Sign Up</u></string>
+    <string name="desc_signup_here"><u>Login</u></string>
+    <string name="default_web_client_id">73835320804-joddrp5a69lfj9i8996p9oi26vfdrrib.apps.googleusercontent.com</string>
+</resources>
