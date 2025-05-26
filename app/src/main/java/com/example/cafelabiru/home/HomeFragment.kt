@@ -15,8 +15,11 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.example.cafelabiru.AddMenuActivity
 import com.example.cafelabiru.BookingActivity
+import com.example.cafelabiru.DeliveryActivity
+import com.example.cafelabiru.DineInActivity
 import com.example.cafelabiru.MenuActivity
 import com.example.cafelabiru.R
+import com.example.cafelabiru.TakeawayActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
@@ -53,6 +56,24 @@ class HomeFragment : Fragment() {
         val imageCard2 = view.findViewById<ImageView>(R.id.imageCard2)
         imageCard2.setOnClickListener {
             val intent = Intent(requireContext(), AddMenuActivity::class.java)
+            startActivity(intent)
+        }
+
+        val deliverySection = view.findViewById<ConstraintLayout>(R.id.deliverySection)
+        deliverySection.setOnClickListener {
+            val intent = Intent(requireContext(), DeliveryActivity::class.java)
+            startActivity(intent)
+        }
+
+        val takeawaySection = view.findViewById<ConstraintLayout>(R.id.takeawaySection)
+        takeawaySection.setOnClickListener {
+            val intent = Intent(requireContext(), TakeawayActivity::class.java)
+            startActivity(intent)
+        }
+
+        val dineInSection = view.findViewById<ConstraintLayout>(R.id.dineInSection)
+        dineInSection.setOnClickListener {
+            val intent = Intent(requireContext(), DineInActivity::class.java)
             startActivity(intent)
         }
 
