@@ -38,7 +38,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="Hi"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#0D47A1"
@@ -122,11 +122,12 @@
                     app:layout_constraintWidth_percent="0.22">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/deliverySection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/imageView5"
+                            android:id="@+id/imageViewDeliv"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -146,7 +147,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+                            app:layout_constraintTop_toBottomOf="@+id/imageViewDeliv" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -164,6 +165,7 @@
                     app:layout_constraintWidth_percent="0.22">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/takeawaySection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -206,6 +208,7 @@
                     app:layout_constraintWidth_percent="0.22">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/dineInSection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -248,13 +251,14 @@
                     app:layout_constraintWidth_percent="0.22">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/bookingSection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <ImageView
                             android:id="@+id/imageView4"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="33dp"
+                            android:layout_height="34dp"
                             android:layout_marginTop="4dp"
                             app:layout_constraintBottom_toTopOf="@+id/textView4"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -451,6 +455,7 @@
                         app:cardElevation="4dp">
 
                         <ImageView
+                            android:id="@+id/imageCard1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -465,6 +470,7 @@
                         app:cardElevation="4dp">
 
                         <ImageView
+                            android:id="@+id/imageCard2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"

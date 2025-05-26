@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.databinding.ActivityLoginBinding
+import com.example.cafelabiru.home.HomeFragment
 import com.example.cafelabiru.model.UserModel
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth

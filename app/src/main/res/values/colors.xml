@@ -13,4 +13,5 @@
     <color name="color_200">#C1DAF0</color>
     <color name="color_100">#E4F0FC</color>
     <color name="color_50">#F4F9FF</color>
+    <color name="color_red">#B00020    </color>
 </resources>

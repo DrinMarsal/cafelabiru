@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><!-- button_border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Garis tepi -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/color_700" />   <!-- ganti warna bila perlu -->
+
+    <corners
+        android:bottomLeftRadius="8dp"
+        android:topLeftRadius="8dp" />
+
+
+</shape>
