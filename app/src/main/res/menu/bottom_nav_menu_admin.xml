@@ -6,7 +6,7 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/navigation_myorder_admin"
+        android:id="@+id/navigation_order_admin"
         android:icon="@drawable/myorder"
         android:title="Order" />
 
