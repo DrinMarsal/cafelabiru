@@ -68,11 +68,12 @@
 
                 <ImageButton
                     android:id="@+id/btnEditName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitCenter"
                     android:layout_alignParentEnd="true"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_edit"
+                    android:src="@drawable/pencil_bg"
                     android:contentDescription="Edit Name" />
             </RelativeLayout>
 
@@ -103,11 +104,12 @@
 
                 <ImageButton
                     android:id="@+id/btnEditEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitCenter"
                     android:layout_alignParentEnd="true"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_edit"
+                    android:src="@drawable/pencil_bg"
                     android:contentDescription="Edit Email" />
             </RelativeLayout>
 
@@ -137,11 +139,12 @@
 
                 <ImageButton
                     android:id="@+id/btnEditAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitCenter"
                     android:layout_alignParentEnd="true"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_edit"
+                    android:src="@drawable/pencil_bg"
                     android:contentDescription="Edit Address" />
             </RelativeLayout>
 
@@ -170,11 +173,12 @@
 
                 <ImageButton
                     android:id="@+id/btnEditPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitCenter"
                     android:layout_alignParentEnd="true"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_edit"
+                    android:src="@drawable/pencil_bg"
                     android:contentDescription="Edit Phone" />
             </RelativeLayout>
         </LinearLayout>
