@@ -135,7 +135,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUi(user: FirebaseUser?) {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+        val userId = user?.uid ?: return
+        val database = FirebaseDatabase.getInstance()
+        val usersRef = database.getReference("user").child(userId)
+
+        usersRef.get().addOnSuccessListener { snapshot ->
+            val role = snapshot.child("role").getValue(String::class.java)
+
+            if (role == "admin") {
+                // Pergi ke AdminActivity (atau fragment)
+//                val intent = Intent(this, AdminMainActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Pergi ke MainActivity biasa (untuk user)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+            finish()
+        }.addOnFailureListener {
+            Toast.makeText(this, "Gagal ambil data user", Toast.LENGTH_SHORT).show()
+        }
     }
+
 }
