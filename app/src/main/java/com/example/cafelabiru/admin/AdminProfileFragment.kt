@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.cafelabiru.R
 
-class AdminOrderStatusFragment : Fragment() {
-
+class AdminProfileFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +18,7 @@ class AdminOrderStatusFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_order_status, container, false)
+        return inflater.inflate(R.layout.fragment_admin_profile, container, false)
     }
 
     companion object {
