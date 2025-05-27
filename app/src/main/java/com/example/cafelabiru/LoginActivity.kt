@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafelabiru.admin.AdminActivity
 import com.example.cafelabiru.databinding.ActivityLoginBinding
 import com.example.cafelabiru.home.HomeFragment
 import com.example.cafelabiru.model.UserModel
@@ -18,15 +19,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var userName: String
     private lateinit var email: String
     private lateinit var password: String
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var database: DatabaseReference
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
@@ -128,8 +132,9 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
+        val firebaseUser = auth.currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
+            updateUi(firebaseUser)
             finish()
         }
     }
@@ -140,15 +145,13 @@ class LoginActivity : AppCompatActivity() {
         val usersRef = database.getReference("user").child(userId)
 
         usersRef.get().addOnSuccessListener { snapshot ->
-            val role = snapshot.child("role").getValue(String::class.java)
+            val role = snapshot.child("roleProfile").getValue(String::class.java)
 
             if (role == "admin") {
-                // Pergi ke AdminActivity (atau fragment)
-//                val intent = Intent(this, AdminMainActivity::class.java)
+                val intent = Intent(this, AdminActivity::class.java) // ganti sesuai nama Activity admin kamu
                 startActivity(intent)
             } else {
-                // Pergi ke MainActivity biasa (untuk user)
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java) // user biasa
                 startActivity(intent)
             }
             finish()

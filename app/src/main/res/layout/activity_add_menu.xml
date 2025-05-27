@@ -25,6 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <EditText
+        android:id="@+id/etMenuCategories"
+        android:hint="Categories"
+        android:inputType="numberDecimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <ImageView
         android:id="@+id/imgPreview"
         android:layout_width="match_parent"
