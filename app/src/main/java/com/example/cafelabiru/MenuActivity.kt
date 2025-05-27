@@ -57,7 +57,6 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Update order summary when returning from detail activity
         updateOrderSummary()
     }
 
@@ -68,37 +67,42 @@ class MenuActivity : AppCompatActivity() {
 
     private fun fetchMenuItems() {
         binding.progressBar.visibility = View.VISIBLE
+        val selectedCategory = intent.getStringExtra("CATEGORY") ?: ""
 
-        android.util.Log.d("MenuActivity", "Mulai fetch data dari Firebase")
+        android.util.Log.d("MenuActivity", "Mulai fetch data dari Firebase untuk kategori: $selectedCategory")
 
-        database.child("menu").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                android.util.Log.d("MenuActivity", "Data snapshot diterima: ${snapshot.exists()}")
-                android.util.Log.d("MenuActivity", "Jumlah children: ${snapshot.childrenCount}")
+        database.child("menu")
+            .orderByChild("categories")
+            .equalTo(selectedCategory)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    android.util.Log.d("MenuActivity", "Data snapshot diterima: ${snapshot.exists()}")
+                    android.util.Log.d("MenuActivity", "Jumlah children: ${snapshot.childrenCount}")
 
-                foodList.clear()
-                for (dataSnap in snapshot.children) {
-                    android.util.Log.d("MenuActivity", "Processing child: ${dataSnap.key}")
-                    val item = dataSnap.getValue(FoodModel::class.java)
-                    if (item != null) {
-                        android.util.Log.d("MenuActivity", "Item berhasil diparsing: ${item.name}")
-                        foodList.add(item)
-                    } else {
-                        android.util.Log.e("MenuActivity", "Item null untuk key: ${dataSnap.key}")
+                    foodList.clear()
+                    for (dataSnap in snapshot.children) {
+                        val item = dataSnap.getValue(FoodModel::class.java)
+                        if (item != null) {
+                            foodList.add(item)
+                        } else {
+                            android.util.Log.e("MenuActivity", "Item null untuk key: ${dataSnap.key}")
+                        }
+                    }
+
+                    adapter.notifyDataSetChanged()
+                    binding.progressBar.visibility = View.GONE
+
+                    if (foodList.isEmpty()) {
+                        Toast.makeText(this@MenuActivity, "Tidak ada menu untuk kategori: $selectedCategory", Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                android.util.Log.d("MenuActivity", "Total items dalam foodList: ${foodList.size}")
-                adapter.notifyDataSetChanged()
-                binding.progressBar.visibility = View.GONE
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                android.util.Log.e("MenuActivity", "Database error: ${error.message}")
-                Toast.makeText(this@MenuActivity, "Gagal memuat data: ${error.message}", Toast.LENGTH_LONG).show()
-                binding.progressBar.visibility = View.GONE
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    android.util.Log.e("MenuActivity", "Database error: ${error.message}")
+                    Toast.makeText(this@MenuActivity, "Gagal memuat data: ${error.message}", Toast.LENGTH_LONG).show()
+                    binding.progressBar.visibility = View.GONE
+                }
+            })
     }
 
     private fun updateOrderSummary() {
@@ -132,12 +136,9 @@ class MenuActivity : AppCompatActivity() {
 
         binding.tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
 
-        // Order summary hanya muncul jika ada item, tombol order selalu tampil
-        if (OrderManager.isEmpty()) {
-            binding.layoutOrderSummary.visibility = View.GONE
-        } else {
-            binding.layoutOrderSummary.visibility = View.VISIBLE
-        }
+        // Order summary hanya muncul jika ada item
+        binding.layoutOrderSummary.visibility =
+            if (OrderManager.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun setupOrderButton() {

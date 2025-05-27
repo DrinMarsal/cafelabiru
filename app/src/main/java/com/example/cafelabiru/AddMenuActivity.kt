@@ -1,8 +1,10 @@
 package com.example.cafelabiru
 
+import android.R
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.databinding.ActivityAddMenuBinding
@@ -23,6 +25,12 @@ class AddMenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Tambahkan ini setelah setContentView(binding.root)
+        val categories = listOf("Local", "Bowl", "Pizza", "Snack", "Pasta", "Dessert", "Steaks", "Drinks")
+        val adapter = ArrayAdapter(this, R.layout.simple_dropdown_item_1line, categories)
+        binding.etMenuCategories.setAdapter(adapter)
+
 
         database = FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
@@ -52,7 +60,7 @@ class AddMenuActivity : AppCompatActivity() {
                 imageRef.putFile(imageUri!!)
                     .addOnSuccessListener {
                         imageRef.downloadUrl.addOnSuccessListener { uri ->
-                            val food = FoodModel(name, desc, price, uri.toString())
+                            val food = FoodModel(name, categories, desc, price, uri.toString())
                             database.child("menu").child(menuId).setValue(food)
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()

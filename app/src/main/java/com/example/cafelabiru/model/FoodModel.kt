@@ -4,6 +4,7 @@ import java.io.Serializable
 
 data class FoodModel(
     val name: String = "",
+    val categories: String = "",
     val description: String = "",
     val price: Double = 0.0,
     val imageUrl: String = "",

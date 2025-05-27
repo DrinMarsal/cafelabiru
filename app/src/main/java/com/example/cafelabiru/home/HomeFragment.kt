@@ -50,12 +50,21 @@ class HomeFragment : Fragment() {
         val imageCard1 = view.findViewById<ImageView>(R.id.imageCard1)
         imageCard1.setOnClickListener {
             val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("CATEGORY", "Dessert")
             startActivity(intent)
         }
 
         val imageCard2 = view.findViewById<ImageView>(R.id.imageCard2)
         imageCard2.setOnClickListener {
-            val intent = Intent(requireContext(), AddMenuActivity::class.java)
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("CATEGORY", "local")
+            startActivity(intent)
+        }
+
+        val imageCard3 = view.findViewById<ImageView>(R.id.imageCard3)
+        imageCard3.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("CATEGORY", "drinks")
             startActivity(intent)
         }
 
