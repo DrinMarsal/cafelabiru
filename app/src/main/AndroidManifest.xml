@@ -22,11 +22,19 @@
         android:theme="@style/Theme.Cafelabiru"
         tools:targetApi="31">
         <activity
+            android:name=".OrderStatusActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".admin.AdminOrderTakeawayActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.AdminDetailActivity"
             android:exported="false" />
         <activity
             android:name=".admin.AdminOrderStatusActivity"
             android:exported="false" />
+        <activity android:name=".OrderDetailActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
