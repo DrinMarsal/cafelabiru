@@ -61,11 +61,6 @@ class MenuActivity : AppCompatActivity() {
         updateOrderSummary()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        OrderManager.removeOrderChangeListener(orderChangeListener)
-    }
-
     private fun fetchMenuItems() {
         binding.progressBar.visibility = View.VISIBLE
 
@@ -102,14 +97,22 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun updateOrderSummary() {
-        val layoutOrderItems = binding.layoutOrderSummary.findViewById<LinearLayout>(R.id.layoutOrderItems)
+        android.util.Log.d("MenuActivity", "===== UPDATE ORDER SUMMARY =====")
+
+        // Akses layoutOrderItems yang ada di dalam cardOrderSummary
+        val layoutOrderItems = binding.cardOrderSummary.findViewById<LinearLayout>(R.id.layoutOrderItems)
         layoutOrderItems.removeAllViews()
 
         val orderMap = OrderManager.getOrderMap()
         val totalPrice = OrderManager.getTotalPrice()
         val inflater = LayoutInflater.from(this)
 
+        android.util.Log.d("MenuActivity", "Order map size: ${orderMap.size}")
+        android.util.Log.d("MenuActivity", "Total price: $totalPrice")
+
         for ((food, qty) in orderMap) {
+            android.util.Log.d("MenuActivity", "Menambahkan item ke layout: ${food.name} x $qty")
+
             val itemView = inflater.inflate(R.layout.item_order_summary, layoutOrderItems, false)
             val tvName = itemView.findViewById<TextView>(R.id.tvOrderItemName)
             val tvQty = itemView.findViewById<TextView>(R.id.tvOrderQty)
@@ -130,13 +133,17 @@ class MenuActivity : AppCompatActivity() {
             layoutOrderItems.addView(itemView)
         }
 
-        binding.tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+        // Update total price - akses tvTotalPrice yang ada di dalam cardOrderSummary
+        val tvTotalPrice = binding.cardOrderSummary.findViewById<TextView>(R.id.tvTotalPrice)
+        tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
 
-        // Order summary hanya muncul jika ada item, tombol order selalu tampil
+        // Order summary visibility - gunakan cardOrderSummary langsung
         if (OrderManager.isEmpty()) {
-            binding.layoutOrderSummary.visibility = View.GONE
+            android.util.Log.d("MenuActivity", "Order kosong, menyembunyikan summary")
+            binding.cardOrderSummary.visibility = View.GONE
         } else {
-            binding.layoutOrderSummary.visibility = View.VISIBLE
+            android.util.Log.d("MenuActivity", "Order ada, menampilkan summary")
+            binding.cardOrderSummary.visibility = View.VISIBLE
         }
     }
 
@@ -145,6 +152,8 @@ class MenuActivity : AppCompatActivity() {
             if (OrderManager.isEmpty()) {
                 Toast.makeText(this, "Pesanan masih kosong", Toast.LENGTH_SHORT).show()
             } else {
+                val intent = Intent(this, OrderDetailActivity::class.java)
+                startActivity(intent)
                 val pesan = OrderManager.getOrderSummaryText()
                 val total = OrderManager.getTotalPrice()
                 Toast.makeText(this, "Pesanan:\n$pesan\nTotal: Rp%.2f".format(total), Toast.LENGTH_LONG).show()
