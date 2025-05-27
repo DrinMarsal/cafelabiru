@@ -1,6 +1,7 @@
 package com.example.cafelabiru
 
 import android.content.Intent
+import android.widget.SearchView
 import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
@@ -66,8 +67,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Set default location (Jakarta)
-        val defaultLocation = LatLng(-6.2088, 106.8456)
+        // Set default location (Pekanbaru)
+        val defaultLocation = LatLng(0.5071, 101.4478)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
 
         // Set map click listener

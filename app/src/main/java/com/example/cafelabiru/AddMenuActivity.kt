@@ -53,8 +53,14 @@ class AddMenuActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val menuId = database.child("menu").push().key
-            if (menuId != null) {
+            database.child("menu").get().addOnSuccessListener { snapshot ->
+                val lastId = snapshot.children.mapNotNull {
+                    it.key?.removePrefix("M")?.toIntOrNull()
+                }.maxOrNull() ?: 0
+
+                val newIdNumber = lastId + 1
+                val menuId = "M" + String.format("%03d", newIdNumber)
+
                 val imageRef = storageRef.child("menu_images/$menuId.jpg")
 
                 imageRef.putFile(imageUri!!)
@@ -64,7 +70,6 @@ class AddMenuActivity : AppCompatActivity() {
                             database.child("menu").child(menuId).setValue(food)
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-
                                 }
                                 .addOnFailureListener {
                                     Toast.makeText(this, "Gagal menyimpan data menu", Toast.LENGTH_SHORT).show()
@@ -74,8 +79,12 @@ class AddMenuActivity : AppCompatActivity() {
                     .addOnFailureListener {
                         Toast.makeText(this, "Upload gambar gagal", Toast.LENGTH_SHORT).show()
                     }
+
+            }.addOnFailureListener {
+                Toast.makeText(this, "Gagal mengambil data untuk generate ID", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

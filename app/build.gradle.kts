@@ -43,13 +43,14 @@ android {
 
 dependencies {
 
-
+    implementation (libs.firebase.core)
     implementation(libs.glide)
     implementation(libs.glide.compiler)
     implementation(libs.firebase.storage)
     implementation(libs.image.picker)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
@@ -58,6 +59,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.places.v330)
     implementation(libs.places)
     implementation(libs.firebase.database)
     implementation(libs.play.services.maps)

@@ -3,6 +3,7 @@ package com.example.cafelabiru.model
 import java.io.Serializable
 
 data class FoodModel(
+    val menuId: String = "",
     val name: String = "",
     val categories: String = "",
     val description: String = "",
