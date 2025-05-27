@@ -37,6 +37,7 @@ class AddMenuActivity : AppCompatActivity() {
         binding.btnSaveMenu.setOnClickListener {
             val name = binding.etMenuName.text.toString().trim()
             val desc = binding.etMenuDesc.text.toString().trim()
+            val categories = binding.etMenuCategories.text.toString().trim()
             val price = binding.etMenuPrice.text.toString().toDoubleOrNull()
 
             if (name.isBlank() || desc.isBlank() || price == null || imageUri == null) {

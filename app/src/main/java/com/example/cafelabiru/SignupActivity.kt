@@ -151,7 +151,12 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun saveUserData(userId: String) {
-        val user = UserModel(userName, password, email)
+        val user = UserModel(
+            roleProfile = "user", // Tambahkan ini
+            userName = userName,
+            password = password,
+            email = email
+        )
         database.child("user").child(userId).setValue(user)
             .addOnSuccessListener {
                 Log.d("Firebase", "User data saved")
