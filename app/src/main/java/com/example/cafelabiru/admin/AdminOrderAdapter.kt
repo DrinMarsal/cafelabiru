@@ -17,7 +17,8 @@ import java.util.*
 
 class AdminOrderAdapter(
     private val orders: List<OrderModel>,
-    private val userIds: List<String> // Add this to track user IDs
+    private val userIds: List<String>,
+    private val onItemClick: (userId: String, orderId: String) -> Unit
 ) : RecyclerView.Adapter<AdminOrderAdapter.OrderViewHolder>() {
 
     class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,30 +45,82 @@ class AdminOrderAdapter(
         holder.tvDelivery.text = order.status
         holder.imgFood.setImageResource(R.drawable.nasgor)
 
-        // Cek status untuk set tombol dan behavior-nya
-        if (order.status == "pending") {
-            holder.btnAccept.text = "Terima"
-            holder.btnAccept.isEnabled = true
-            holder.btnAccept.backgroundTintList = ContextCompat.getColorStateList(holder.itemView.context, android.R.color.holo_green_dark)
-        } else {
-            holder.btnAccept.text = "Dalam Proses"
-            holder.btnAccept.isEnabled = false
-            holder.btnAccept.backgroundTintList = ContextCompat.getColorStateList(holder.itemView.context, android.R.color.holo_orange_light)
+        holder.itemView.setOnClickListener {
+            onItemClick(userIds[position], orders[position].orderId)
         }
 
-        holder.btnAccept.setOnClickListener {
-            val dbRef = FirebaseDatabase.getInstance().getReference("orders")
-            dbRef.child(userId).child(order.orderId).child("status").setValue("accepted")
-                .addOnSuccessListener {
-                    Toast.makeText(holder.itemView.context, "Order accepted", Toast.LENGTH_SHORT).show()
-                    // Update tombol setelah diterima
-                    holder.btnAccept.text = "Menunggu"
-                    holder.btnAccept.isEnabled = false
+
+        // Logic untuk handle click berdasarkan status
+        when (order.status) {
+            "pending" -> {
+                holder.btnAccept.text = "Terima"
+                holder.btnAccept.isEnabled = true
+                holder.btnAccept.backgroundTintList = ContextCompat.getColorStateList(
+                    holder.itemView.context,
+                    android.R.color.holo_green_dark
+                )
+
+                holder.btnAccept.setOnClickListener {
+                    val dbRef = FirebaseDatabase.getInstance().getReference("orders")
+                    dbRef.child(userId).child(order.orderId).child("status").setValue("accepted")
+                        .addOnSuccessListener {
+                            Toast.makeText(holder.itemView.context, "Order diterima", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { error ->
+                            Toast.makeText(holder.itemView.context, "Failed to accept order: ${error.message}", Toast.LENGTH_SHORT).show()
+                        }
                 }
-                .addOnFailureListener { error ->
-                    Toast.makeText(holder.itemView.context, "Failed to accept order: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+            "accepted" -> {
+                holder.btnAccept.text = "Menunggu"
+                holder.btnAccept.isEnabled = true
+                holder.btnAccept.backgroundTintList = ContextCompat.getColorStateList(
+                    holder.itemView.context,
+                    android.R.color.holo_orange_light
+                )
+
+                holder.btnAccept.setOnClickListener {
+                    val dbRef = FirebaseDatabase.getInstance().getReference("orders")
+                    dbRef.child(userId).child(order.orderId).child("status").setValue("completed")
+                        .addOnSuccessListener {
+                            Toast.makeText(holder.itemView.context, "Pesanan selesai", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { error ->
+                            Toast.makeText(holder.itemView.context, "Failed to complete order: ${error.message}", Toast.LENGTH_SHORT).show()
+                        }
                 }
+            }
+            "completed" -> {
+                holder.btnAccept.text = "Hapus"
+                holder.btnAccept.isEnabled = true
+                holder.btnAccept.backgroundTintList = ContextCompat.getColorStateList(
+                    holder.itemView.context,
+                    android.R.color.holo_red_dark
+                )
+
+                holder.btnAccept.setOnClickListener {
+                    // Konfirmasi sebelum menghapus
+                    android.app.AlertDialog.Builder(holder.itemView.context)
+                        .setTitle("Konfirmasi Hapus")
+                        .setMessage("Apakah Anda yakin ingin menghapus pesanan #${order.orderId}?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            val dbRef = FirebaseDatabase.getInstance().getReference("orders")
+                            dbRef.child(userId).child(order.orderId).removeValue()
+                                .addOnSuccessListener {
+                                    Toast.makeText(holder.itemView.context, "Pesanan dihapus", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { error ->
+                                    Toast.makeText(holder.itemView.context, "Gagal menghapus pesanan: ${error.message}", Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                        .setNegativeButton("Batal", null)
+                        .show()
+                }
+            }
         }
+
+        // HAPUS BAGIAN INI - INI YANG MENYEBABKAN MASALAH
+        // holder.btnAccept.setOnClickListener { ... }
     }
 
     override fun getItemCount() = orders.size

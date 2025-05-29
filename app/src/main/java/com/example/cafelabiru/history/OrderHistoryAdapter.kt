@@ -53,6 +53,7 @@ class OrderHistoryAdapter(
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val order = orders[position]
 
+
         // Display menu names (limit to avoid too long text)
         val menuNames = when {
             order.menuItems.isEmpty() -> "Pesanan Kosong"
@@ -86,9 +87,8 @@ class OrderHistoryAdapter(
         // Add visual indicator based on order status
         val statusColor = when (order.status) {
             "pending" -> R.color.orange
-            "confirmed" -> R.color.blue
-            "preparing" -> R.color.yellow
-            "delivered" -> R.color.green
+            "accepted" -> R.color.yellow
+            "completed" -> R.color.green
             else -> R.color.gray
         }
 

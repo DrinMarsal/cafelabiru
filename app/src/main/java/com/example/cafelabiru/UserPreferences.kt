@@ -18,9 +18,9 @@ class UserPreferences(context: Context) {
         prefs.edit().apply {
             putString(KEY_USER_NAME, userName)
             putString(KEY_USER_EMAIL, email)
-            putString(KEY_USER_ADDRESS, address.ifEmpty { "Simpang baru, Tampan" })
-            putString(KEY_USER_ADDRESS_DETAIL, addressDetail.ifEmpty { "Simpang baru, Tampan, Pekanbaru City, Riau, Indonesia" })
-            putString(KEY_USER_PHONE, phone.ifEmpty { "+62 812-3456-7890" })
+//            putString(KEY_USER_ADDRESS, address.ifEmpty { "Simpang baru, Tampan" })
+//            putString(KEY_USER_ADDRESS_DETAIL, addressDetail.ifEmpty { "Simpang baru, Tampan, Pekanbaru City, Riau, Indonesia" })
+//            putString(KEY_USER_PHONE, phone.ifEmpty { "+62 812-3456-7890" })
             apply()
         }
     }

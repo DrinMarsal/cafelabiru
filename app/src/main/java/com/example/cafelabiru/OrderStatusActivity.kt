@@ -7,6 +7,9 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.cafelabiru.model.OrderMenuItem
 import com.example.cafelabiru.model.OrderModel
 import com.example.cafelabiru.model.UserModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,6 +28,7 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var tvNameDet: TextView
     private lateinit var tvNoDet: TextView
     private lateinit var btnOrderDetails: Button
+    private lateinit var recyclerView: RecyclerView // Pastikan ini diinisialisasi
 
     private var orderAddress: String? = null
     private lateinit var googleMap: GoogleMap
@@ -34,16 +38,14 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_status)
 
-        // Inisialisasi view
-        tvStatus = findViewById(R.id.tv_status)
-        tvOrderDate = findViewById(R.id.tv_order_date)
-        tvAddressDet = findViewById(R.id.tv_address_det)
-        tvNameDet = findViewById(R.id.tv_name_det)
-        tvNoDet = findViewById(R.id.tv_no_det)
-        btnOrderDetails = findViewById(R.id.btnOrderDetails)
+        // Inisialisasi semua view termasuk RecyclerView
+        initViews()
 
         val userId = intent.getStringExtra("USER_ID")
         val orderId = intent.getStringExtra("ORDER_ID")
+
+        // Debug log untuk memastikan data diterima
+        Log.d("OrderStatusActivity", "UserId: $userId, OrderId: $orderId")
 
         if (userId == null || orderId == null) {
             Toast.makeText(this, "Data order tidak lengkap", Toast.LENGTH_SHORT).show()
@@ -51,15 +53,85 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        // Inisialisasi Map
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.mapFragment) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        // Setup RecyclerView
+        setupRecyclerView()
 
+        // Load menu items
+        loadMenuItems(userId, orderId)
+
+        // Inisialisasi Map
+        initMap()
+
+        // Fetch order and user data
         fetchOrderAndUserName(userId, orderId)
 
         btnOrderDetails.setOnClickListener {
-            Toast.makeText(this, "Fitur detail order coming soon", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+    }
+
+    private fun initViews() {
+        try {
+            tvStatus = findViewById(R.id.tv_status)
+            tvOrderDate = findViewById(R.id.tv_order_date)
+            tvAddressDet = findViewById(R.id.tv_address_det)
+            tvNameDet = findViewById(R.id.tv_name_det)
+            tvNoDet = findViewById(R.id.tv_no_det)
+            btnOrderDetails = findViewById(R.id.btnOrderDetails)
+            recyclerView = findViewById(R.id.recyclerViewOrder) // INI YANG PENTING!
+        } catch (e: Exception) {
+            Log.e("OrderStatusActivity", "Error initializing views: ${e.message}")
+            Toast.makeText(this, "Error loading interface", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        // Set adapter kosong dulu
+        recyclerView.adapter = OrderItemAdapter(emptyList())
+    }
+
+    private fun loadMenuItems(userId: String, orderId: String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("orders/$userId/$orderId/menuItems")
+
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                try {
+                    val orderedItems = mutableListOf<OrderMenuItem>()
+
+                    for (itemSnapshot in snapshot.children) {
+                        val item = itemSnapshot.getValue(OrderMenuItem::class.java)
+                        item?.let {
+                            orderedItems.add(it)
+                            Log.d("OrderStatusActivity", "Loaded item: ${it.menuName}")
+                        }
+                    }
+
+                    // Update adapter dengan data baru
+                    recyclerView.adapter = OrderItemAdapter(orderedItems)
+                    Log.d("OrderStatusActivity", "Total items loaded: ${orderedItems.size}")
+
+                } catch (e: Exception) {
+                    Log.e("OrderStatusActivity", "Error processing menu items: ${e.message}")
+                    Toast.makeText(this@OrderStatusActivity, "Error loading menu items", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("OrderStatusActivity", "Database error: ${error.message}")
+                Toast.makeText(this@OrderStatusActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun initMap() {
+        try {
+            val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.mapFragment) as? SupportMapFragment
+            mapFragment?.getMapAsync(this)
+        } catch (e: Exception) {
+            Log.e("OrderStatusActivity", "Error initializing map: ${e.message}")
         }
     }
 
@@ -71,42 +143,52 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
 
         orderRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(orderSnapshot: DataSnapshot) {
-                val orderModel = orderSnapshot.getValue(OrderModel::class.java)
-                if (orderModel != null) {
-                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(userSnapshot: DataSnapshot) {
-                            val userModel = userSnapshot.getValue(UserModel::class.java)
-                            val userName = userModel?.userName ?: "Nama tidak tersedia"
-                            loadOrderStatus(orderModel, userName)
-                        }
+                try {
+                    val orderModel = orderSnapshot.getValue(OrderModel::class.java)
+                    if (orderModel != null) {
+                        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(userSnapshot: DataSnapshot) {
+                                val userModel = userSnapshot.getValue(UserModel::class.java)
+                                val userName = userModel?.userName ?: "Nama tidak tersedia"
+                                loadOrderStatus(orderModel, userName)
+                            }
 
-                        override fun onCancelled(error: DatabaseError) {
-                            loadOrderStatus(orderModel, "Nama tidak tersedia")
-                        }
-                    })
-                } else {
-                    Toast.makeText(this@OrderStatusActivity, "Order tidak ditemukan", Toast.LENGTH_SHORT).show()
-                    finish()
+                            override fun onCancelled(error: DatabaseError) {
+                                loadOrderStatus(orderModel, "Nama tidak tersedia")
+                            }
+                        })
+                    } else {
+                        Toast.makeText(this@OrderStatusActivity, "Order tidak ditemukan", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                } catch (e: Exception) {
+                    Log.e("OrderStatusActivity", "Error processing order data: ${e.message}")
+                    Toast.makeText(this@OrderStatusActivity, "Error loading order data", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
+                Log.e("OrderStatusActivity", "Database error: ${error.message}")
                 Toast.makeText(this@OrderStatusActivity, "Gagal mengambil data: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun loadOrderStatus(order: OrderModel, userName: String) {
-        tvStatus.text = "Order #${order.orderId}\nStatus: ${order.status}"
-        val dateFormatted = android.text.format.DateFormat.format("dd MMM yyyy HH:mm", order.orderDate)
-        tvOrderDate.text = dateFormatted
+        try {
+            tvStatus.text = "Order #${order.orderId}\nStatus: ${order.status}"
+            val dateFormatted = android.text.format.DateFormat.format("dd MMM yyyy HH:mm", order.orderDate)
+            tvOrderDate.text = dateFormatted
 
-        tvAddressDet.text = order.customerAddressDetail
-        tvNameDet.text = userName
-        tvNoDet.text = order.customerPhone
+            tvAddressDet.text = order.customerAddressDetail ?: "Alamat tidak tersedia"
+            tvNameDet.text = userName
+            tvNoDet.text = order.customerPhone ?: "Nomor tidak tersedia"
 
-        orderAddress = order.customerAddressDetail
-        updateMapLocation()
+            orderAddress = order.customerAddressDetail
+            updateMapLocation()
+        } catch (e: Exception) {
+            Log.e("OrderStatusActivity", "Error loading order status: ${e.message}")
+        }
     }
 
     override fun onMapReady(map: GoogleMap) {

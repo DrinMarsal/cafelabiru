@@ -17,6 +17,10 @@ import com.google.firebase.database.ValueEventListener
 
 class AdminHistoryFragment : Fragment() {
 
+    private lateinit var rvHistory: RecyclerView
+    private lateinit var ordersListener: ValueEventListener
+    private val ordersRef = FirebaseDatabase.getInstance().getReference("orders")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_admin_history, container, false)
     }
@@ -24,14 +28,17 @@ class AdminHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val rvHistory: RecyclerView = view.findViewById(R.id.rv_orders_admin)
+        rvHistory = view.findViewById(R.id.rv_orders_admin)
         rvHistory.layoutManager = LinearLayoutManager(requireContext())
 
+        setupOrdersListener()
+    }
+
+    private fun setupOrdersListener() {
         val confirmedOrders = mutableListOf<OrderModel>()
         val userIdsList = mutableListOf<String>()
 
-        val ordersRef = FirebaseDatabase.getInstance().getReference("orders")
-        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        ordersListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 confirmedOrders.clear()
                 userIdsList.clear()
@@ -41,7 +48,7 @@ class AdminHistoryFragment : Fragment() {
 
                     for (orderSnapshot in userSnapshot.children) {
                         val status = orderSnapshot.child("status").getValue(String::class.java)
-                        if (status == "accepted") {
+                        if (status == "accepted" || status == "completed") {
                             val order = orderSnapshot.getValue(OrderModel::class.java)
                             if (order != null) {
                                 confirmedOrders.add(order)
@@ -51,12 +58,24 @@ class AdminHistoryFragment : Fragment() {
                     }
                 }
 
-                rvHistory.adapter = AdminOrderAdapter(confirmedOrders, userIdsList)
+                rvHistory.adapter = AdminOrderAdapter(confirmedOrders, userIdsList) { userId, orderId ->
+                    Toast.makeText(requireContext(), "Clicked history order $orderId of user $userId", Toast.LENGTH_SHORT).show()
+                    // Bisa tambah intent ke detail order di sini
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(), "Failed to load history: ${error.message}", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
+
+        ordersRef.addValueEventListener(ordersListener)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (::ordersListener.isInitialized) {
+            ordersRef.removeEventListener(ordersListener)
+        }
     }
 }

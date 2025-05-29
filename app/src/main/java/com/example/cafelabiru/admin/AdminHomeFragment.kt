@@ -32,7 +32,7 @@ class AdminHomeFragment : Fragment() {
         rvOrders.layoutManager = LinearLayoutManager(requireContext())
 
         val ordersList = mutableListOf<OrderModel>()
-        val userIdsList = mutableListOf<String>() // Track user IDs
+        val userIdsList = mutableListOf<String>()
 
         val ordersRef = FirebaseDatabase.getInstance().getReference("orders")
         ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -45,16 +45,13 @@ class AdminHomeFragment : Fragment() {
 
                     for (orderSnapshot in userSnapshot.children) {
                         try {
-                            // Try to get the full order object
                             val order = orderSnapshot.getValue(OrderModel::class.java)
 
-                            // Only add pending orders
                             if (order != null && order.status == "pending") {
                                 ordersList.add(order)
                                 userIdsList.add(userId)
                             }
                         } catch (e: Exception) {
-                            // If direct conversion fails, manually construct the order
                             val status = orderSnapshot.child("status").getValue(String::class.java)
                             if (status == "pending") {
                                 val orderId = orderSnapshot.child("orderId").getValue(String::class.java) ?: ""
@@ -66,7 +63,6 @@ class AdminHomeFragment : Fragment() {
                                 val customerPhone = orderSnapshot.child("customerPhone").getValue(String::class.java) ?: ""
                                 val orderDate = orderSnapshot.child("orderDate").getValue(Long::class.java) ?: System.currentTimeMillis()
 
-                                // Handle menu items
                                 val menuItems = mutableListOf<OrderMenuItem>()
                                 orderSnapshot.child("menuItems").children.forEach { itemSnapshot ->
                                     val item = itemSnapshot.getValue(OrderMenuItem::class.java)
@@ -95,8 +91,10 @@ class AdminHomeFragment : Fragment() {
                     }
                 }
 
-                // Set up adapter with both orders and user IDs
-                rvOrders.adapter = AdminOrderAdapter(ordersList, userIdsList)
+                // **PENTING: Beri lambda onItemClick di sini**
+                rvOrders.adapter = AdminOrderAdapter(ordersList, userIdsList) { userId, orderId ->
+                    Toast.makeText(requireContext(), "Clicked order $orderId of user $userId", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

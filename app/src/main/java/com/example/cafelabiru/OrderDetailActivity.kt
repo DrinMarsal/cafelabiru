@@ -100,32 +100,7 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun showEditAddressDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_address, null)
-        val etAddress = dialogView.findViewById<EditText>(R.id.etAddress)
-        val etAddressDetail = dialogView.findViewById<EditText>(R.id.etAddressDetail)
 
-        etAddress.setText(userPreferences.getUserAddress())
-        etAddressDetail.setText(userPreferences.getUserAddressDetail())
-
-        AlertDialog.Builder(this)
-            .setTitle("Edit Alamat Pengiriman")
-            .setView(dialogView)
-            .setPositiveButton("Simpan") { _, _ ->
-                val newAddress = etAddress.text.toString().trim()
-                val newDetail = etAddressDetail.text.toString().trim()
-                if (newAddress.isNotEmpty() && newDetail.isNotEmpty()) {
-                    userPreferences.updateAddress(newAddress, newDetail)
-                    binding.tvAddress.text = newAddress
-                    binding.tvAddressDetail.text = newDetail
-                    Toast.makeText(this, "Alamat diperbarui", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Alamat tidak boleh kosong", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Batal", null)
-            .show()
-    }
 
     private fun showEditPhoneDialog() {
         val etPhone = EditText(this)
@@ -190,8 +165,25 @@ class OrderDetailActivity : AppCompatActivity() {
 
     private fun setupOrderButton() {
         binding.btnOrder.setOnClickListener {
+            val phone = userPreferences.getUserPhone()
+            val address = if (selectedDeliveryLocation.isNotEmpty()) {
+                selectedDeliveryLocation
+            } else {
+                userPreferences.getUserAddress()
+            }
+
             if (OrderManager.isEmpty()) {
                 Toast.makeText(this, "Keranjang kosong!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (phone.isNullOrEmpty()) {
+                Toast.makeText(this, "Silakan isi nomor telepon terlebih dahulu", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (address.isNullOrEmpty()) {
+                Toast.makeText(this, "Silakan pilih lokasi pengiriman terlebih dahulu", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

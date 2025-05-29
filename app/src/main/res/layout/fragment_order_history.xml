@@ -6,16 +6,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="history.OrderHistoryFragment">
+    tools:context="history.OrderHistoryFragment"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/tvOrderHistoryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Riwayat Pesanan"
+        android:layout_marginStart="12dp"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="26dp"
         android:textColor="@android:color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
