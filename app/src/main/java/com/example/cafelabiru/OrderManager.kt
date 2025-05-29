@@ -44,8 +44,11 @@ object OrderManager {
     }
 
     fun addOrderChangeListener(listener: () -> Unit) {
-        listeners.add(listener)
+        if (!listeners.contains(listener)) {
+            listeners.add(listener)
+        }
     }
+
 
     fun removeOrderChangeListener(listener: () -> Unit) {
         listeners.remove(listener)

@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import com.example.cafelabiru.LoginActivity
 import com.example.cafelabiru.MapsActivity
 import com.example.cafelabiru.R
 import com.example.cafelabiru.model.UserModel
@@ -58,6 +60,18 @@ class AdminProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val btnLogout: Button = view.findViewById(R.id.btnLogout)
+
+        btnLogout.setOnClickListener {
+            // Logout Firebase
+            FirebaseAuth.getInstance().signOut()
+
+            // Setelah logout, pindah ke activity login (ganti dengan activity kamu)
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
 
         btnEditAddress.setOnClickListener {
             openMapsActivity()

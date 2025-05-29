@@ -180,7 +180,18 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@drawable/pencil_bg"
                     android:contentDescription="Edit Phone" />
+
             </RelativeLayout>
+
+
         </LinearLayout>
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_card"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </ScrollView>

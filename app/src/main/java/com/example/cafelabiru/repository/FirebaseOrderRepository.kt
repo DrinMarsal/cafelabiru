@@ -1,5 +1,7 @@
 package com.example.cafelabiru.repository
 
+import android.util.Log
+import android.widget.Toast
 import com.example.cafelabiru.model.OrderModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -13,6 +15,11 @@ class FirebaseOrderRepository {
     private val ordersRef = database.getReference("orders")
     private val auth = FirebaseAuth.getInstance()
 
+    fun generateOrderId(): String {
+        val randomDigits = (1000..9999).random() // 4 digit angka acak
+        return "ORD$randomDigits"
+    }
+
     fun saveOrder(order: OrderModel, callback: (Boolean, String) -> Unit) {
         // Get current user ID
         val userId = auth.currentUser?.uid
@@ -22,7 +29,7 @@ class FirebaseOrderRepository {
         }
 
         // Generate unique order ID
-        val orderId = ordersRef.push().key
+        var orderId = generateOrderId();
         if (orderId == null) {
             callback(false, "Failed to generate order ID")
             return
@@ -40,6 +47,29 @@ class FirebaseOrderRepository {
             }
             .addOnFailureListener { exception ->
                 callback(false, exception.message ?: "Unknown error")
+            }
+    }
+
+
+    fun updateOrderLocation(orderId: String, location: String, callback: (Boolean) -> Unit) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userId = currentUser?.uid
+
+        if (userId == null) {
+            callback(false)
+            return
+        }
+
+        val database = FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app")
+        val orderRef = database.getReference("orders").child(userId).child(orderId)
+
+        orderRef.child("locationOrderDetail").setValue(location)
+            .addOnSuccessListener {
+                callback(true)
+            }
+            .addOnFailureListener { e ->
+                Log.e("FirebaseOrderRepository", "Failed to update order location: ${e.message}")
+                callback(false)
             }
     }
 

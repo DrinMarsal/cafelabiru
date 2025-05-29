@@ -46,7 +46,6 @@
                 android:layout_marginBottom="12dp" />
 
             <LinearLayout
-                android:id="@+id/layoutAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -90,7 +89,8 @@
 
                 </LinearLayout>
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/tvLocationOrder"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/pencil_bg"

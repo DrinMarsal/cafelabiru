@@ -10,6 +10,7 @@ data class OrderModel(
     val customerAddress: String = "",
     val customerAddressDetail: String = "",
     val customerPhone: String = "",
+    var locationOrderDetail: String? = null,
     val orderDate: Long = System.currentTimeMillis(),
     val status: String = "pending" // pending, confirmed, preparing, delivered
 )

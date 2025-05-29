@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cafelabiru.R
-import com.google.firebase.auth.FirebaseAuth
+import com.example.cafelabiru.model.OrderModel
+import com.example.cafelabiru.model.OrderMenuItem
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -20,33 +22,86 @@ class AdminHomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate layout yang berbeda dari admin jika ada
         return inflater.inflate(R.layout.fragment_admin_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tvName: TextView = view.findViewById(R.id.tv_name)
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val rvOrders: RecyclerView = view.findViewById(R.id.rv_orders_admin)
+        rvOrders.layoutManager = LinearLayoutManager(requireContext())
 
-        // Load nama user dari Firebase
-        if (userId != null) {
-            val database =
-                FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app")
-            val userRef = database.getReference("user").child(userId)
+        val ordersList = mutableListOf<OrderModel>()
+        val userIdsList = mutableListOf<String>() // Track user IDs
 
-            userRef.child("userName").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val name = snapshot.getValue(String::class.java)
-                    tvName.text = name ?: "No name"
+        val ordersRef = FirebaseDatabase.getInstance().getReference("orders")
+        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                ordersList.clear()
+                userIdsList.clear()
+
+                for (userSnapshot in snapshot.children) {
+                    val userId = userSnapshot.key ?: continue
+
+                    for (orderSnapshot in userSnapshot.children) {
+                        try {
+                            // Try to get the full order object
+                            val order = orderSnapshot.getValue(OrderModel::class.java)
+
+                            // Only add pending orders
+                            if (order != null && order.status == "pending") {
+                                ordersList.add(order)
+                                userIdsList.add(userId)
+                            }
+                        } catch (e: Exception) {
+                            // If direct conversion fails, manually construct the order
+                            val status = orderSnapshot.child("status").getValue(String::class.java)
+                            if (status == "pending") {
+                                val orderId = orderSnapshot.child("orderId").getValue(String::class.java) ?: ""
+                                val total = orderSnapshot.child("total").getValue(Int::class.java) ?: 0
+                                val subTotal = orderSnapshot.child("subTotal").getValue(Int::class.java) ?: 0
+                                val ppn = orderSnapshot.child("ppn").getValue(Int::class.java) ?: 0
+                                val deliveryFee = orderSnapshot.child("deliveryFee").getValue(Int::class.java) ?: 7000
+                                val customerAddress = orderSnapshot.child("customerAddress").getValue(String::class.java) ?: ""
+                                val customerPhone = orderSnapshot.child("customerPhone").getValue(String::class.java) ?: ""
+                                val orderDate = orderSnapshot.child("orderDate").getValue(Long::class.java) ?: System.currentTimeMillis()
+
+                                // Handle menu items
+                                val menuItems = mutableListOf<OrderMenuItem>()
+                                orderSnapshot.child("menuItems").children.forEach { itemSnapshot ->
+                                    val item = itemSnapshot.getValue(OrderMenuItem::class.java)
+                                    if (item != null) {
+                                        menuItems.add(item)
+                                    }
+                                }
+
+                                val order = OrderModel(
+                                    orderId = orderId,
+                                    menuItems = menuItems,
+                                    subTotal = subTotal,
+                                    ppn = ppn,
+                                    deliveryFee = deliveryFee,
+                                    total = total,
+                                    customerAddress = customerAddress,
+                                    customerPhone = customerPhone,
+                                    orderDate = orderDate,
+                                    status = status
+                                )
+
+                                ordersList.add(order)
+                                userIdsList.add(userId)
+                            }
+                        }
+                    }
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(requireContext(), "Failed to load name", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            })
-        }
+                // Set up adapter with both orders and user IDs
+                rvOrders.adapter = AdminOrderAdapter(ordersList, userIdsList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "Failed to load orders: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

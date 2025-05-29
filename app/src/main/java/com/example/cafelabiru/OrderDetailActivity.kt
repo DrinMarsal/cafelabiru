@@ -1,10 +1,18 @@
 package com.example.cafelabiru
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cafelabiru.databinding.ActivityOrderDetailBinding
 import com.example.cafelabiru.model.OrderMenuItem
@@ -16,6 +24,11 @@ class OrderDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOrderDetailBinding
     private lateinit var adapter: OrderDetailAdapter
     private lateinit var userPreferences: UserPreferences
+    private lateinit var tvLocationOrder: ImageButton
+
+    // Tambahkan variabel untuk menyimpan lokasi yang dipilih
+    private var selectedDeliveryLocation: String = ""
+    private var currentOrderId: String = ""
 
     private val orderChangeListener: () -> Unit = {
         runOnUiThread {
@@ -32,6 +45,10 @@ class OrderDetailActivity : AppCompatActivity() {
 
         userPreferences = UserPreferences(this)
 
+        binding.tvLocationOrder.setOnClickListener {
+            openMapsActivity()
+        }
+
         setupUI()
         setupRecyclerView()
         calculateTotals()
@@ -39,6 +56,30 @@ class OrderDetailActivity : AppCompatActivity() {
         setupClickListeners()
 
         OrderManager.addOrderChangeListener(orderChangeListener)
+    }
+
+    private fun openMapsActivity() {
+        try {
+            val intentOrder = Intent(this, MapsActivity::class.java)
+            intentOrder.putExtra("mode", "order_preview") // Ubah mode
+            startActivityForResult(intentOrder, REQUEST_CODE_MAPS)
+        } catch (e: Exception) {
+            Log.e("OrderDetailActivity", "Error opening MapsActivity: ${e.message}")
+            Toast.makeText(this, "Error membuka peta", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_MAPS && resultCode == RESULT_OK) {
+            selectedDeliveryLocation = data?.getStringExtra("selected_address") ?: ""
+            if (selectedDeliveryLocation.isNotEmpty()) {
+                // Update tampilan alamat dengan lokasi yang dipilih
+                binding.tvAddress.text = "Lokasi Pengiriman"
+                binding.tvAddressDetail.text = selectedDeliveryLocation
+                Toast.makeText(this, "Lokasi pengiriman berhasil dipilih", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -54,9 +95,6 @@ class OrderDetailActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        binding.layoutAddress.setOnClickListener {
-            showEditAddressDialog()
-        }
         binding.layoutPhone.setOnClickListener {
             showEditPhoneDialog()
         }
@@ -174,14 +212,27 @@ class OrderDetailActivity : AppCompatActivity() {
             val deliveryFee = 7000
             val total = subtotal + ppn + deliveryFee
 
+            // Gunakan lokasi yang dipilih dari Maps atau alamat default
+            val deliveryAddress = if (selectedDeliveryLocation.isNotEmpty()) {
+                selectedDeliveryLocation
+            } else {
+                userPreferences.getUserAddress()
+            }
+
+            val addressDetail = if (selectedDeliveryLocation.isNotEmpty()) {
+                selectedDeliveryLocation
+            } else {
+                userPreferences.getUserAddressDetail()
+            }
+
             val order = OrderModel(
                 menuItems = orderItems,
                 subTotal = subtotal,
                 ppn = ppn,
                 deliveryFee = deliveryFee,
                 total = total,
-                customerAddress = userPreferences.getUserAddress(),
-                customerAddressDetail = userPreferences.getUserAddressDetail(),
+                customerAddress = deliveryAddress,
+                customerAddressDetail = addressDetail,
                 customerPhone = userPreferences.getUserPhone()
             )
 
@@ -191,6 +242,13 @@ class OrderDetailActivity : AppCompatActivity() {
                     binding.btnOrder.isEnabled = true
 
                     if (success) {
+                        currentOrderId = orderIdOrError
+
+                        // Jika ada lokasi khusus yang dipilih, simpan ke order tersebut
+                        if (selectedDeliveryLocation.isNotEmpty()) {
+                            saveLocationToOrder(currentOrderId, selectedDeliveryLocation)
+                        }
+
                         Toast.makeText(
                             this,
                             "Pesanan berhasil! Order ID: $orderIdOrError\nTotal: Rp$total",
@@ -210,8 +268,21 @@ class OrderDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveLocationToOrder(orderId: String, location: String) {
+        val firebaseRepository = FirebaseOrderRepository()
+        firebaseRepository.updateOrderLocation(orderId, location) { success ->
+            if (!success) {
+                Log.e("OrderDetailActivity", "Failed to save location to order")
+            }
+        }
+    }
+
     data class OrderDetailItem(
         val food: com.example.cafelabiru.model.FoodModel,
         val quantity: Int
     )
+
+    companion object {
+        private const val REQUEST_CODE_MAPS = 1001
+    }
 }

@@ -33,6 +33,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var selectedLocation: LatLng? = null
     private var selectedAddress: String = ""
+    private var currentMode: String = "profile" // default mode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +45,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Initialize SharedPreferences untuk mendapatkan user yang sedang login
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
 
+        // Get mode from intent
+        currentMode = intent.getStringExtra("mode") ?: "profile"
+
         // Initialize views
         btnSaveLocation = findViewById(R.id.btnSaveLocation)
         btnCancel = findViewById(R.id.btnCancel)
         tvLocationInfo = findViewById(R.id.tvLocationInfo)
+
+        // Update button text based on mode
+        if (currentMode == "order_preview") {
+            btnSaveLocation.text = "Pilih Lokasi Ini"
+        } else {
+            btnSaveLocation.text = "Simpan Lokasi"
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -56,7 +67,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Set click listeners
         btnSaveLocation.setOnClickListener {
-            saveLocationToDatabase()
+            when (currentMode) {
+                "order_preview" -> returnSelectedLocation()
+                "profile" -> saveLocationToDatabase()
+                "order" -> saveLocationToDatabase()
+            }
         }
 
         btnCancel.setOnClickListener {
@@ -116,6 +131,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun returnSelectedLocation() {
+        if (selectedLocation == null) {
+            Toast.makeText(this, "Silakan pilih lokasi terlebih dahulu", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Return selected address to previous activity
+        val resultIntent = Intent()
+        resultIntent.putExtra("selected_address", selectedAddress)
+        resultIntent.putExtra("selected_lat", selectedLocation!!.latitude)
+        resultIntent.putExtra("selected_lng", selectedLocation!!.longitude)
+        setResult(RESULT_OK, resultIntent)
+        finish()
+    }
+
     private fun saveLocationToDatabase() {
         if (selectedLocation == null) {
             Toast.makeText(this, "Silakan pilih lokasi terlebih dahulu", Toast.LENGTH_SHORT).show()
@@ -123,32 +153,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        val userId = currentUser?.uid
-
-        if (userId == null) {
+        val userId = currentUser?.uid ?: run {
             Toast.makeText(this, "Error: User tidak ditemukan", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Reference ke user berdasarkan UID
-        val userRef =
-            FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app")
-                .getReference("user")
-                .child(userId)
+        val database = FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app")
 
-        // Simpan lokasi
-        userRef.child("location").setValue(selectedAddress)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Lokasi berhasil disimpan", Toast.LENGTH_SHORT).show()
-                finish()
+        if (currentMode == "profile") {
+            val userRef = database.getReference("user").child(userId)
+            userRef.child("location").setValue(selectedAddress)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Alamat profil berhasil disimpan", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Gagal menyimpan alamat: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        } else if (currentMode == "order") {
+            val orderId = intent.getStringExtra("orderId")
+            if (orderId.isNullOrEmpty()) {
+                Toast.makeText(this, "Error: orderId tidak ditemukan", Toast.LENGTH_SHORT).show()
+                return
             }
-            .addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "Gagal menyimpan lokasi: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+
+            val orderRef = database.getReference("orders").child(userId).child(orderId)
+            orderRef.child("locationOrderDetail").setValue(selectedAddress)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Alamat pesanan berhasil disimpan", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Gagal menyimpan alamat: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
     }
-
 }
