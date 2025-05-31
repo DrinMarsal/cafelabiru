@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home -> HomeFragment()
                 R.id.navigation_myorder -> OrderHistoryFragment() // Replace with your actual fragment
                 R.id.navigation_profile -> ProfileFragment()
+                R.id.navigation_menu -> MenuFragment()
                 else -> null
             }
 
