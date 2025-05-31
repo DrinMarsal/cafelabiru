@@ -247,7 +247,11 @@ class OrderDetailActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
                         OrderManager.clear()
+                        val intent = Intent(this, OrderSuccessActivity::class.java)
+                        intent.putExtra("ORDER_ID", orderIdOrError)
+                        startActivity(intent)
                         finish()
+
                     } else {
                         Toast.makeText(
                             this,

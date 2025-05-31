@@ -1,114 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/bg_image_rounded"
-        android:clipToOutline="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Nama Makanan"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/ivImage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/tvDesc"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Deskripsi makanan"
-        android:textSize="16sp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/tvPrice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Rp 0.00"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tvDesc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/btnAddToOrder"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Tambah ke Pesanan"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#0049A2"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Layout summary pesanan (akan disembunyikan jika kosong) -->
     <LinearLayout
-        android:id="@+id/layoutOrderSummary"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#EEE"
-        android:padding="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/btnOrder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:orientation="vertical">
 
-        <!-- Daftar item pesanan -->
+        <!-- Main Card Container - TAMBAHKAN TAG PEMBUKA YANG HILANG -->
         <LinearLayout
-            android:id="@+id/layoutOrderItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white">
+
+                <!-- Food Image Section -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp"
+                    >
+
+                    <ImageView
+                        android:id="@+id/ivImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_nasi_salmon"
+                        android:scaleType="centerCrop"
+                        android:background="?attr/selectableItemBackground" />
+
+                </RelativeLayout>
+
+                <!-- Content Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Title -->
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="French Fries"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Portion Info -->
+                    <TextView
+                        android:id="@+id/tvPortion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1 portion (for 1 people)"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Description with Learn More -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="#F8F8F8"
+                        android:padding="16dp"
+                        android:layout_marginBottom="20dp">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/color_700"
+                            android:layout_marginEnd="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvDesc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="French fries with a variety of delicious tomato sauces, added with a blend of spices that have been preserved for generations, making the food more delicious..."
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:lineSpacingExtra="2dp" />
+
+                            <TextView
+                                android:id="@+id/tvLearnMore"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="..."
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="8dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:padding="4dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Rating and Info Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="24dp">
+
+                        <!-- Time -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginEnd="24dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_time"
+                                android:layout_marginEnd="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvTime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="7 minutes"
+                                android:textSize="14sp"
+                                android:textColor="#666666" />
+
+                        </LinearLayout>
+
+                        <!-- Distance -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/location"
+                                android:layout_marginEnd="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvDistance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1.6 km"
+                                android:textSize="14sp"
+                                android:textColor="#666666" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Price and Quantity Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total amount"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginBottom="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rp28K"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/black" />
+
+                        </LinearLayout>
+
+                        <!-- Quantity Controls -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_card"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="4dp">
+
+                            <ImageView
+                                android:id="@+id/btnDecrease"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:src="@drawable/minus"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvQuantity"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/black"
+                                android:gravity="center"
+                                android:layout_marginHorizontal="8dp" />
+
+                            <ImageView
+                                android:id="@+id/btnAddToOrder"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:src="@drawable/add"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="8dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Add to Cart Button -->
+                    <Button
+                        android:id="@+id/btnOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Add to cart"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/bg_rounded"
+                        android:elevation="4dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Order Summary Section - PINDAH KE POSISI YANG BENAR DAN UBAH VISIBILITY -->
+        <LinearLayout
+            android:id="@+id/layoutOrderSummary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#F4F9FF"/>
+            android:background="@drawable/bg_card"
+            android:padding="8dp"
+            android:layout_margin="16dp"
+            android:visibility="visible">
 
-        <!-- Total harga -->
-        <TextView
-            android:id="@+id/tvTotalPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total: Rp0"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:gravity="end"
-            android:layout_marginTop="8dp"
-            android:background="#F4F9FF"/>
+            <!-- Daftar item pesanan -->
+            <LinearLayout
+                android:id="@+id/layoutOrderItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                />
+
+            <!-- Total harga -->
+            <TextView
+                android:id="@+id/tvTotalPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total: Rp0"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:gravity="end"
+                android:layout_marginTop="8dp"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Tombol order selalu tampil -->
-    <Button
-        android:id="@+id/btnOrder"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Order"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#0049A2"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -42,7 +42,7 @@ class MenuActivity : AppCompatActivity() {
 
         adapter.setOnAddClickListener { food ->
             OrderManager.addItem(food)
-            Toast.makeText(this, "${food.name} ditambahkan ke pesanan", Toast.LENGTH_SHORT).show()
+
         }
 
         fetchMenuItems()

@@ -1,48 +1,66 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <EditText
-        android:id="@+id/etMenuName"
-        android:hint="Nama Makanan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/etMenuDesc"
-        android:hint="Deskripsi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/etMenuPrice"
-        android:hint="Harga"
-        android:inputType="numberDecimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/etMenuCategories"
-        android:hint="Categories"
-        android:inputType="numberDecimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Menu"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:layout_marginBottom="12sp"/>
 
     <ImageView
         android:id="@+id/imgPreview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
-        android:background="#DDDDDD" />
+        android:background="@drawable/bg_card" />
+
+    <!-- GANTI RelativeLayout dengan LinearLayout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card"
+        android:layout_marginTop="12dp"
+        android:padding="12sp">
+
+        <EditText
+            android:id="@+id/etMenuCategories"
+            android:hint="Categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/etMenuName"
+            android:hint="Nama Makanan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/etMenuDesc"
+            android:hint="Deskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/etMenuPrice"
+            android:hint="Harga"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnPickImage"
         android:text="Pilih Gambar"
+        android:background="@drawable/bg_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
@@ -50,6 +68,7 @@
     <Button
         android:id="@+id/btnSaveMenu"
         android:text="Simpan Menu"
+        android:background="@drawable/bg_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"/>
