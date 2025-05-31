@@ -1,9 +1,7 @@
 package com.example.cafelabiru.admin
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cafelabiru.AddMenuActivity
 import com.example.cafelabiru.R
 import com.example.cafelabiru.databinding.ActivityAdminBinding
 import com.example.cafelabiru.home.HomeFragment
@@ -21,12 +19,6 @@ class AdminActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment_admin, AdminHomeFragment())
             .commit()
-
-        // FAB click
-        binding.fab.setOnClickListener {
-            // Misalnya: buka form tambah produk
-            startActivity(Intent(this, AddMenuActivity::class.java))
-        }
 
         // Bottom Navigation
         binding.navViewAdmin.setOnItemSelectedListener { item ->
