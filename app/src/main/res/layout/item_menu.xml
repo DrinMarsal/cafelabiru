@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Local Delight"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="14sp"
             android:layout_marginTop="8dp" />
@@ -36,6 +37,7 @@
         <TextView
             android:id="@+id/tvDesc"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="Deskripsi panjang dari makanan..."
             android:textSize="14sp"
@@ -57,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rp59.000"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 android:layout_gravity="center_vertical"/>
 
