@@ -30,11 +30,15 @@
         android:layout_marginTop="12dp"
         android:padding="12sp">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/etMenuCategories"
-            android:hint="Categories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="Pilih Kategori"
+            android:dropDownHeight="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:clickable="true" />
 
         <EditText
             android:id="@+id/etMenuName"

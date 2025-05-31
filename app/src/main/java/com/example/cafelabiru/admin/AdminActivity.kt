@@ -1,7 +1,9 @@
 package com.example.cafelabiru.admin
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafelabiru.AddMenuActivity
 import com.example.cafelabiru.R
 import com.example.cafelabiru.databinding.ActivityAdminBinding
 import com.example.cafelabiru.home.HomeFragment
@@ -14,6 +16,11 @@ class AdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.fabMain.setOnClickListener {
+            val intent = Intent(this, AddMenuActivity::class.java)
+            startActivity(intent)
+        }
 
         // Set default fragment
         supportFragmentManager.beginTransaction()

@@ -3,6 +3,7 @@ package com.example.cafelabiru
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.databinding.ActivityAddMenuBinding
@@ -26,6 +27,28 @@ class AddMenuActivity : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app").reference
 
+        val kategoriMenu = listOf(
+            "Local",
+            "Bowl",
+            "Pizza",
+            "Snack",
+            "Pasta",
+            "Dessert",
+            "Steaks",
+            "Drinks"
+        )
+
+        val kategoriAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            kategoriMenu
+        )
+
+        binding.etMenuCategories.setAdapter(kategoriAdapter)
+        binding.etMenuCategories.setOnClickListener {
+            binding.etMenuCategories.showDropDown()
+        }
+
         binding.btnPickImage.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
@@ -40,7 +63,7 @@ class AddMenuActivity : AppCompatActivity() {
             val categories = binding.etMenuCategories.text.toString().trim()
             val price = binding.etMenuPrice.text.toString().toDoubleOrNull()
 
-            if (name.isBlank() || desc.isBlank() || price == null || imageUri == null) {
+            if (name.isBlank() || desc.isBlank() || price == null || categories.isBlank() || imageUri == null) {
                 Toast.makeText(this, "Lengkapi semua data dan pilih gambar", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -61,6 +84,7 @@ class AddMenuActivity : AppCompatActivity() {
                             val food = FoodModel(
                                 menuId = menuId,
                                 name = name,
+                                categories = categories,
                                 description = desc,
                                 price = price,
                                 imageUrl = uri.toString()
@@ -82,7 +106,6 @@ class AddMenuActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal mengambil data untuk generate ID", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

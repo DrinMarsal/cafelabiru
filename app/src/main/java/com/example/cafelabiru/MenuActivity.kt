@@ -64,7 +64,8 @@ class MenuActivity : AppCompatActivity() {
     private fun fetchMenuItems() {
         binding.progressBar.visibility = View.VISIBLE
 
-        android.util.Log.d("MenuActivity", "Mulai fetch data dari Firebase")
+        val categoryFilter = intent.getStringExtra("categoryFilter")
+        android.util.Log.d("MenuActivity", "Mulai fetch data dari Firebase dengan filter kategori: $categoryFilter")
 
         database.child("menu").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -76,14 +77,19 @@ class MenuActivity : AppCompatActivity() {
                     android.util.Log.d("MenuActivity", "Processing child: ${dataSnap.key}")
                     val item = dataSnap.getValue(FoodModel::class.java)
                     if (item != null) {
-                        android.util.Log.d("MenuActivity", "Item berhasil diparsing: ${item.name}")
-                        foodList.add(item)
+                        android.util.Log.d("MenuActivity", "Item berhasil diparsing: ${item.name}, kategori: ${item.categories}")
+                        if (categoryFilter == null || item.categories.equals(categoryFilter, ignoreCase = true)) {
+                            foodList.add(item)
+                            android.util.Log.d("MenuActivity", "Item ditambahkan ke list: ${item.name}")
+                        } else {
+                            android.util.Log.d("MenuActivity", "Item dilewati karena tidak cocok filter: ${item.name}")
+                        }
                     } else {
                         android.util.Log.e("MenuActivity", "Item null untuk key: ${dataSnap.key}")
                     }
                 }
 
-                android.util.Log.d("MenuActivity", "Total items dalam foodList: ${foodList.size}")
+                android.util.Log.d("MenuActivity", "Total items dalam foodList setelah filter: ${foodList.size}")
                 adapter.notifyDataSetChanged()
                 binding.progressBar.visibility = View.GONE
             }

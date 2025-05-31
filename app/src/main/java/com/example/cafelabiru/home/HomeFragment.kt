@@ -50,12 +50,56 @@ class HomeFragment : Fragment() {
         val imageCard1 = view.findViewById<ImageView>(R.id.imageCard1)
         imageCard1.setOnClickListener {
             val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Local")
             startActivity(intent)
         }
 
         val imageCard2 = view.findViewById<ImageView>(R.id.imageCard2)
         imageCard2.setOnClickListener {
-            val intent = Intent(requireContext(), AddMenuActivity::class.java)
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Bowl")
+            startActivity(intent)
+        }
+
+        val imageCard3 = view.findViewById<ImageView>(R.id.imageCard3)
+        imageCard3.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Pizza")
+            startActivity(intent)
+        }
+
+        val imageCard4 = view.findViewById<ImageView>(R.id.imageCard4)
+        imageCard4.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Snack")
+            startActivity(intent)
+        }
+
+        val imageCard5 = view.findViewById<ImageView>(R.id.imageCard5)
+        imageCard5.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Pasta")
+            startActivity(intent)
+        }
+
+        val imageCard6 = view.findViewById<ImageView>(R.id.imageCard6)
+        imageCard6.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Dessert")
+            startActivity(intent)
+        }
+
+        val imageCard7 = view.findViewById<ImageView>(R.id.imageCard7)
+        imageCard7.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Steaks")
+            startActivity(intent)
+        }
+
+        val imageCard8 = view.findViewById<ImageView>(R.id.imageCard8)
+        imageCard8.setOnClickListener {
+            val intent = Intent(requireContext(), MenuActivity::class.java)
+            intent.putExtra("categoryFilter", "Drinks")
             startActivity(intent)
         }
 
