@@ -86,6 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Order Summary Card -->
+    <!-- Order Summary Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardOrderSummary"
         android:layout_width="0dp"
@@ -115,11 +116,18 @@
                 android:textColor="#2C3E50"
                 android:layout_marginBottom="12dp" />
 
-            <LinearLayout
-                android:id="@+id/layoutOrderItems"
+            <!-- Tambahkan ScrollView khusus untuk item pesanan -->
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:layout_height="100dp"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/layoutOrderItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
 
             <View
                 android:layout_width="match_parent"
@@ -136,7 +144,6 @@
                 android:textSize="20sp"
                 android:textColor="#E74C3C"
                 android:gravity="end" />
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

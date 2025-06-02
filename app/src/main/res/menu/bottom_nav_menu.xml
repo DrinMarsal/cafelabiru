@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/navigation_menu"
-        android:icon="@drawable/baseline_restaurant_menu_241"
+        android:icon="@drawable/dfsdfsdfs"
         android:title="Menu" />
 
     <item

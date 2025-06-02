@@ -141,7 +141,7 @@
                                 android:id="@+id/imageView"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                app:layout_constraintBottom_toTopOf="@+id/tv_dinein"
+                                app:layout_constraintBottom_toTopOf="@+id/tv_no_takeaway"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -159,10 +159,10 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_dinein" />
+                                app:layout_constraintTop_toBottomOf="@+id/tv_no_takeaway" />
 
                             <TextView
-                                android:id="@+id/tv_dinein"
+                                android:id="@+id/tv_no_takeaway"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="5"

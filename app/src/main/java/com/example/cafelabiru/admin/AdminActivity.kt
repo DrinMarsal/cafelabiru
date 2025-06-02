@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.AddMenuActivity
 import com.example.cafelabiru.R
 import com.example.cafelabiru.databinding.ActivityAdminBinding
-import com.example.cafelabiru.home.HomeFragment
 
 class AdminActivity : AppCompatActivity() {
 
