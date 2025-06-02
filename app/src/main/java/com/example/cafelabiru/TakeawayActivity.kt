@@ -53,7 +53,6 @@ class TakeawayActivity : AppCompatActivity() {
         }
 
 
-
         binding.outletCard.setOnClickListener {
             val intent = Intent(this, DineInActivity::class.java)
             startActivityForResult(intent, DeliveryActivity.REQUEST_CODE_PICK_OUTLET)
