@@ -47,12 +47,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fullname"
-                android:textSize="14sp"
-                android:textColor="#555555" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
@@ -63,7 +64,9 @@
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/btnEditName"
                     android:hint="Awikoakwoaw"
-                    android:textColor="@color/black"
+                    android:inputType="textNoSuggestions"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/places_autocomplete_prediction_secondary_text"
                     />
 
                 <ImageButton
@@ -82,12 +85,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email address"
-                android:textSize="14sp"
-                android:textColor="#555555" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
@@ -97,8 +101,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/btnEditEmail"
-                    android:textColor="@color/black"
+                    android:textColor="@color/places_autocomplete_prediction_secondary_text"
                     android:hint="awiakwoakw@gmail.com"
+                    android:background="@android:color/transparent"
                     android:enabled="false"
                     android:inputType="textEmailAddress" />
 
@@ -118,8 +123,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Address"
-                android:textSize="14sp"
-                android:textColor="#555555" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -134,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/btnEditAddress"
                     android:hint="pekanbaru sonoan dikit"
-                    android:textColor="@color/black"
+                    android:textColor="@color/places_autocomplete_prediction_secondary_text"
                     android:enabled="false" />
 
                 <ImageButton
@@ -153,12 +159,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Phone number"
-                android:textSize="14sp"
-                android:textColor="#555555" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
 
@@ -166,8 +173,9 @@
                     android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="@color/places_autocomplete_prediction_secondary_text"
                     android:layout_toStartOf="@+id/btnEditPhone"
+                    android:background="@android:color/transparent"
                     android:hint="(+62)-88888"
                     android:inputType="phone" />
 

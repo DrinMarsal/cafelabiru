@@ -31,26 +31,27 @@ class AdminHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            val tvName: TextView = view.findViewById(R.id.tv_name)
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val tvName: TextView = view.findViewById(R.id.tv_name)
+        val tvTotalOrderCount: TextView = view.findViewById(R.id.tv_no_total_order)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-            if (userId != null) {
-                val database =
-                    FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app")
-                val userRef = database.getReference("user").child(userId)
+        if (userId != null) {
+            val database =
+                FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app")
+            val userRef = database.getReference("user").child(userId)
 
-                userRef.child("userName").addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val name = snapshot.getValue(String::class.java)
-                        tvName.text = name ?: "No name"
-                    }
+            userRef.child("userName").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val name = snapshot.getValue(String::class.java)
+                    tvName.text = name ?: "No name"
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(requireContext(), "Failed to load name", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                })
-            }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(requireContext(), "Failed to load name", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+        }
 
         val rvOrders: RecyclerView = view.findViewById(R.id.rv_orders_admin)
         rvOrders.layoutManager = LinearLayoutManager(requireContext())
@@ -58,16 +59,30 @@ class AdminHomeFragment : Fragment() {
         val ordersList = mutableListOf<OrderModel>()
         val userIdsList = mutableListOf<String>()
 
+        // Load orders and count total orders
+        loadOrdersAndUpdateCount(ordersList, userIdsList, rvOrders, tvTotalOrderCount)
+    }
+
+    private fun loadOrdersAndUpdateCount(
+        ordersList: MutableList<OrderModel>,
+        userIdsList: MutableList<String>,
+        rvOrders: RecyclerView,
+        tvTotalOrderCount: TextView
+    ) {
         val ordersRef = FirebaseDatabase.getInstance().getReference("orders")
         ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 ordersList.clear()
                 userIdsList.clear()
+                var totalOrdersCount = 0
 
                 for (userSnapshot in snapshot.children) {
                     val userId = userSnapshot.key ?: continue
 
                     for (orderSnapshot in userSnapshot.children) {
+                        // Count all orders (regardless of status)
+                        totalOrdersCount++
+
                         try {
                             val order = orderSnapshot.getValue(OrderModel::class.java)
 
@@ -115,6 +130,9 @@ class AdminHomeFragment : Fragment() {
                     }
                 }
 
+                // Update total orders count in TextView
+                tvTotalOrderCount.text = totalOrdersCount.toString()
+
                 // **PENTING: Beri lambda onItemClick di sini**
                 rvOrders.adapter = AdminOrderAdapter(ordersList, userIdsList) { userId, orderId ->
                     val intent = Intent(requireContext(), AdminOrderStatusActivity::class.java).apply {
@@ -123,7 +141,6 @@ class AdminHomeFragment : Fragment() {
                     }
                     startActivity(intent)
                 }
-
             }
 
             override fun onCancelled(error: DatabaseError) {

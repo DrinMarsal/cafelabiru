@@ -49,6 +49,14 @@ class AddMenuActivity : AppCompatActivity() {
             binding.etMenuCategories.showDropDown()
         }
 
+        binding.btnBackMenu.setOnClickListener {
+            finish()
+        }
+
+        binding.textBackMenu.setOnClickListener {
+            finish()
+        }
+
         binding.btnPickImage.setOnClickListener {
             ImagePicker.with(this)
                 .crop()
