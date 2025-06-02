@@ -1,19 +1,21 @@
 package com.example.cafelabiru
 
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.DeliveryActivity.Companion.EXTRA_OUTLET_DISTANCE
 import com.example.cafelabiru.DeliveryActivity.Companion.EXTRA_OUTLET_NAME
 import com.example.cafelabiru.DeliveryActivity.Companion.REQUEST_CODE_PICK_OUTLET
 import com.example.cafelabiru.databinding.ActivityTakeawayBinding
-import java.util.Calendar
+import com.example.cafelabiru.model.OrderModel
 
 class TakeawayActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTakeawayBinding
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,9 @@ class TakeawayActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnDelivery.setOnClickListener {
+            // Reset orderType ke delivery saat pindah ke DeliveryActivity
+            OrderManager.setOrderType("delivery")
+
             // Cek apakah DeliveryActivity sudah ada di stack
             val intent = Intent(this, DeliveryActivity::class.java)
             // Gunakan FLAG_CLEAR_TOP untuk kembali ke DeliveryActivity yang sudah ada
@@ -31,23 +36,29 @@ class TakeawayActivity : AppCompatActivity() {
         }
 
 
+        val btnConfirm = findViewById<Button>(R.id.btn_confirm)
+        btnConfirm.setOnClickListener {
+            // Set orderType ke "takeaway" di OrderManager
+            OrderManager.setOrderType("takeaway")
+
+            // Buat order baru dengan orderType "takeaway"
+            val newOrder = OrderModel(orderType = "takeaway")
+
+            // Simpan ke OrderManager
+            OrderManager.currentOrder = newOrder
+
+            // Pindah ke MenuActivity
+            val intent = Intent(this, MenuActivity::class.java)
+            startActivity(intent)
+        }
+
+
+
         binding.outletCard.setOnClickListener {
             val intent = Intent(this, DineInActivity::class.java)
             startActivityForResult(intent, DeliveryActivity.REQUEST_CODE_PICK_OUTLET)
         }
 
-        binding.llDeliveryTime.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-
-            val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
-                val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
-                binding.tvDeliveryTime.text = formattedTime
-            }, hour, minute, true)
-
-            timePickerDialog.show()
-        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -57,10 +68,10 @@ class TakeawayActivity : AppCompatActivity() {
 
             // update UI di outletCard (pastikan di layout ada TextView dengan id berikut)
             val tvName = binding.outletCard.findViewById<TextView>(R.id.tvOutletName)
-            val tvDistance = binding.outletCard.findViewById<TextView>(R.id.tvOutletDistance)
+
 
             tvName.text = outletName
-            tvDistance.text = outletDistance
+
         }
     }
 }

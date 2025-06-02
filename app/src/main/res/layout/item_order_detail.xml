@@ -85,10 +85,11 @@
             <!-- Minus Button -->
             <ImageButton
                 android:id="@+id/btnMinus"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/minus"
                 android:scaleType="centerInside"
+                android:background="@android:color/transparent"
                 android:contentDescription="Kurangi item" />
 
             <!-- Quantity Text -->
@@ -101,15 +102,16 @@
                 android:textStyle="bold"
                 android:textColor="#000000"
                 android:gravity="center"
-                android:layout_marginHorizontal="8dp" />
+                 />
 
             <!-- Plus Button -->
             <ImageButton
                 android:id="@+id/btnPlus"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/add"
                 android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
                 android:contentDescription="Tambah item" />
 
         </LinearLayout>

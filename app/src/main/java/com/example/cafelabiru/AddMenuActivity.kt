@@ -76,7 +76,8 @@ class AddMenuActivity : AppCompatActivity() {
                 val newIdNumber = lastId + 1
                 val menuId = "M" + String.format("%03d", newIdNumber)
 
-                val imageRef = storageRef.child("menu_images/$menuId.jpg")
+                val imageRef = storageRef.child("menu_images/$menuId.png")
+
 
                 imageRef.putFile(imageUri!!)
                     .addOnSuccessListener {

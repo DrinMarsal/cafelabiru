@@ -1,10 +1,14 @@
 package com.example.cafelabiru
 
 import com.example.cafelabiru.model.FoodModel
+import com.example.cafelabiru.model.OrderModel
 
 object OrderManager {
     private val orderMap = mutableMapOf<FoodModel, Int>()
     private val listeners = mutableListOf<() -> Unit>()
+
+    var currentOrder: OrderModel? = null
+    var currentOrderType: String = "delivery"
 
     fun addItem(food: FoodModel) {
         val currentQty = orderMap[food] ?: 0
@@ -20,6 +24,17 @@ object OrderManager {
             orderMap.remove(food)
         }
         notifyListeners()
+    }
+
+
+    // Method untuk mengatur orderType
+    fun setOrderType(orderType: String) {
+        currentOrderType = orderType
+    }
+
+    // Method untuk mendapatkan orderType
+    fun getOrderType(): String {
+        return currentOrderType
     }
 
     fun getQuantity(food: FoodModel): Int {
@@ -40,6 +55,7 @@ object OrderManager {
 
     fun clear() {
         orderMap.clear()
+        currentOrderType = "delivery"
         notifyListeners()
     }
 

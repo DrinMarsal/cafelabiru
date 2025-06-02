@@ -31,6 +31,7 @@ class MenuActivity : AppCompatActivity() {
         foodList = ArrayList()
         adapter = MenuAdapter(foodList)
 
+
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
         binding.recyclerView.adapter = adapter
 
@@ -62,7 +63,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun fetchMenuItems() {
-        binding.progressBar.visibility = View.VISIBLE
+
 
         val categoryFilter = intent.getStringExtra("categoryFilter")
         android.util.Log.d("MenuActivity", "Mulai fetch data dari Firebase dengan filter kategori: $categoryFilter")
@@ -91,13 +92,13 @@ class MenuActivity : AppCompatActivity() {
 
                 android.util.Log.d("MenuActivity", "Total items dalam foodList setelah filter: ${foodList.size}")
                 adapter.notifyDataSetChanged()
-                binding.progressBar.visibility = View.GONE
+
             }
 
             override fun onCancelled(error: DatabaseError) {
                 android.util.Log.e("MenuActivity", "Database error: ${error.message}")
                 Toast.makeText(this@MenuActivity, "Gagal memuat data: ${error.message}", Toast.LENGTH_LONG).show()
-                binding.progressBar.visibility = View.GONE
+
             }
         })
     }
