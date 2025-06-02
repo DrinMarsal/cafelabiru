@@ -120,7 +120,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView2"
+                    app:layout_constraintEnd_toStartOf="@+id/cardView3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.22">
@@ -156,47 +156,6 @@
                 </androidx.cardview.widget.CardView>
 
                 <!-- CardView 2: Takeaway -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView2"
-                    android:layout_width="74dp"
-                    android:layout_height="74dp"
-                    app:cardBackgroundColor="@color/color_100"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/cardView3"
-                    app:layout_constraintStart_toEndOf="@+id/cardView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.22">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/takeawaySection"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            app:layout_constraintBottom_toTopOf="@+id/textView2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/takeaway" />
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="3dp"
-                            android:text="Takeaway"
-                            android:textColor="@color/color_300"
-                            android:textSize="10sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/imageView" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
 
                 <!-- CardView 3: Dine In -->
                 <androidx.cardview.widget.CardView
@@ -207,7 +166,7 @@
                     app:cardCornerRadius="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/cardView4"
-                    app:layout_constraintStart_toEndOf="@+id/cardView2"
+                    app:layout_constraintStart_toEndOf="@+id/cardView"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintWidth_percent="0.22">
 
@@ -231,7 +190,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="3dp"
-                            android:text="Dine In"
+                            android:text="Outlet"
                             android:textColor="@color/color_300"
                             android:textSize="10sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -321,6 +280,7 @@
 
                     <!-- Item 1 -->
                     <LinearLayout
+                        android:id="@+id/recom1"
                         android:layout_width="115dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -333,20 +293,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/img_promo" />
+                            android:src="@drawable/ic_japanese_beef" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="Nasi Goreng Komplit Labiru Style"
+                            android:text="Japanese Slice Beef Yakiniku W/ Scrambled Egg"
                             android:textColor="#000000"
                             android:textSize="12sp" />
                     </LinearLayout>
 
                     <!-- Item 1 -->
                     <LinearLayout
+                        android:id="@+id/recom2"
                         android:layout_width="115dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -358,19 +319,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/mie" />
+                            android:src="@drawable/ic_spag_aglio" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="Nasi Goreng Komplit Labiru Style"
+                            android:text="Signature Spicy Aglio E Olio W/ Red Vannamei Prawn"
                             android:textColor="#000000"
                             android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/recom3"
                         android:layout_width="115dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -382,19 +344,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/nasgor" />
+                            android:src="@drawable/ic_cheesecake" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="Nasi Goreng Komplit Labiru Style"
+                            android:text="Not So Burn Cheesecake"
                             android:textColor="#000000"
                             android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/recom4"
                         android:layout_width="115dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -406,14 +369,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/nasgor" />
+                            android:src="@drawable/ic_italian_pizza" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="Nasi Goreng Komplit Labiru Style"
+                            android:text="Italian Pepperoni Pizza"
                             android:textColor="#000000"
                             android:textSize="12sp" />
                     </LinearLayout>

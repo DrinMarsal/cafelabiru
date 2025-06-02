@@ -42,6 +42,7 @@ class OrderDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOrderDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        OrderManager.currentOrder
 
         userPreferences = UserPreferences(this)
 

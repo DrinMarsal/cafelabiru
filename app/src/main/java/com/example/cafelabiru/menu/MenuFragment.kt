@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cafelabiru.databinding.FragmentMenuBinding
 import com.example.cafelabiru.model.FoodModel
+import com.example.cafelabiru.model.OrderMenuItem
 import com.google.firebase.database.*
 
 class MenuFragment : Fragment() {
@@ -23,6 +24,7 @@ class MenuFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private lateinit var foodList: ArrayList<FoodModel>
     private lateinit var adapter: MenuAdapter
+    private lateinit var menuIdRecom: ArrayList<FoodModel>
     private val orderChangeListener = { updateOrderSummary() }
 
     override fun onCreateView(
@@ -38,7 +40,10 @@ class MenuFragment : Fragment() {
 
         database = FirebaseDatabase.getInstance("https://cafelabiru-default-rtdb.asia-southeast1.firebasedatabase.app").reference
         foodList = ArrayList()
+        menuIdRecom = ArrayList()
+        adapter = MenuAdapter(menuIdRecom)
         adapter = MenuAdapter(foodList)
+        OrderManager.currentOrder
 
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerView.adapter = adapter
@@ -66,7 +71,7 @@ class MenuFragment : Fragment() {
     }
 
     private fun fetchMenuItems() {
-        binding.progressBar.visibility = View.VISIBLE
+
 
         val categoryFilter = arguments?.getString("categoryFilter")
 
@@ -80,12 +85,31 @@ class MenuFragment : Fragment() {
                     }
                 }
                 adapter.notifyDataSetChanged()
-                binding.progressBar.visibility = View.GONE
+
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(requireContext(), "Gagal memuat data: ${error.message}", Toast.LENGTH_LONG).show()
-                binding.progressBar.visibility = View.GONE
+
+            }
+        })
+
+        val menuIdFilter = arguments?.getString("menuIdFilter") // pastikan kamu kirim ini dari fragment/intent sebelumnya
+
+        database.child("menu").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                menuIdRecom.clear()
+                for (dataSnap in snapshot.children) {
+                    val item = dataSnap.getValue(FoodModel::class.java)
+                    if (item != null && (menuIdFilter.isNullOrBlank() || item.menuId == menuIdFilter)) {
+                        menuIdRecom.add(item)
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "Gagal memuat data: ${error.message}", Toast.LENGTH_LONG).show()
             }
         })
     }

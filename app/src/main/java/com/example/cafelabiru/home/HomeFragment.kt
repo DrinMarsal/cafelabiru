@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,8 +17,10 @@ import androidx.fragment.app.Fragment
 import com.example.cafelabiru.AddMenuActivity
 import com.example.cafelabiru.BookingActivity
 import com.example.cafelabiru.DeliveryActivity
+import com.example.cafelabiru.DetailActivity
 import com.example.cafelabiru.DineInActivity
 import com.example.cafelabiru.MenuActivity
+import com.example.cafelabiru.MenuFragment
 import com.example.cafelabiru.R
 import com.example.cafelabiru.TakeawayActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -40,6 +43,8 @@ class HomeFragment : Fragment() {
         val tvName: TextView = view.findViewById(R.id.tv_name)
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
+
+
         // Ubah status bar lewat activity (karena fragment nggak punya window sendiri)
         activity?.window?.statusBarColor = android.graphics.Color.WHITE
         val windowInsetsController =
@@ -47,6 +52,35 @@ class HomeFragment : Fragment() {
         windowInsetsController?.isAppearanceLightStatusBars = true
 
         // Pakai 'view.findViewById' untuk ambil elemen UI
+
+        val recom2 = view.findViewById<LinearLayout>(R.id.recom2)
+        recom2.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("menuIdFilter", "M012") // kirim data menuId
+            startActivity(intent)
+        }
+
+        val recom3 = view.findViewById<LinearLayout>(R.id.recom3)
+        recom3.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("menuIdFilter", "M014") // kirim data menuId
+            startActivity(intent)
+        }
+
+        val recom4 = view.findViewById<LinearLayout>(R.id.recom4)
+        recom4.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("menuIdFilter", "M008") // kirim data menuId
+            startActivity(intent)
+        }
+
+        val recom1 = view.findViewById<LinearLayout>(R.id.recom1)
+        recom1.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("menuIdFilter", "M007") // kirim data menuId
+            startActivity(intent)
+        }
+
         val imageCard1 = view.findViewById<ImageView>(R.id.imageCard1)
         imageCard1.setOnClickListener {
             val intent = Intent(requireContext(), MenuActivity::class.java)
@@ -105,13 +139,7 @@ class HomeFragment : Fragment() {
 
         val deliverySection = view.findViewById<ConstraintLayout>(R.id.deliverySection)
         deliverySection.setOnClickListener {
-            val intent = Intent(requireContext(), DeliveryActivity::class.java)
-            startActivity(intent)
-        }
-
-        val takeawaySection = view.findViewById<ConstraintLayout>(R.id.takeawaySection)
-        takeawaySection.setOnClickListener {
-            val intent = Intent(requireContext(), TakeawayActivity::class.java)
+            val intent = Intent(requireContext(), MenuActivity::class.java)
             startActivity(intent)
         }
 

@@ -26,21 +26,22 @@
                 android:background="@android:color/white">
 
                 <!-- Food Image Section -->
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="280dp"
+                    android:layout_height="200dp"
                     >
 
                     <ImageView
                         android:id="@+id/ivImage"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="200dp"
                         android:layout_centerInParent="true"
                         android:src="@drawable/ic_nasi_salmon"
                         android:scaleType="centerCrop"
-                        android:background="?attr/selectableItemBackground" />
+                        android:background="@android:color/transparent"
+                        android:clipToOutline="true"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <!-- Content Section -->
                 <LinearLayout
@@ -55,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="French Fries"
-                        android:textSize="28sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:layout_marginBottom="8dp" />
@@ -147,27 +148,7 @@
                         </LinearLayout>
 
                         <!-- Distance -->
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
 
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/location"
-                                android:layout_marginEnd="4dp" />
-
-                            <TextView
-                                android:id="@+id/tvDistance"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1.6 km"
-                                android:textSize="14sp"
-                                android:textColor="#666666" />
-
-                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -198,7 +179,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rp28K"
-                                android:textSize="24sp"
+                                android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/black" />
 
@@ -214,28 +195,9 @@
                             android:paddingHorizontal="4dp">
 
                             <ImageView
-                                android:id="@+id/btnDecrease"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:src="@drawable/minus"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:padding="8dp" />
-
-                            <TextView
-                                android:id="@+id/tvQuantity"
-                                android:layout_width="40dp"
-                                android:layout_height="wrap_content"
-                                android:text="1"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/black"
-                                android:gravity="center"
-                                android:layout_marginHorizontal="8dp" />
-
-                            <ImageView
                                 android:id="@+id/btnAddToOrder"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
+                                android:layout_width="42dp"
+                                android:layout_height="42dp"
                                 android:src="@drawable/add"
                                 android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="8dp" />
@@ -244,17 +206,7 @@
 
                     </LinearLayout>
 
-                    <!-- Add to Cart Button -->
-                    <Button
-                        android:id="@+id/btnOrder"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:text="Add to cart"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:background="@drawable/bg_rounded"
-                        android:elevation="4dp" />
+
 
                 </LinearLayout>
 
@@ -269,16 +221,22 @@
             android:orientation="vertical"
             android:background="@drawable/bg_card"
             android:padding="8dp"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
             android:visibility="visible">
 
             <!-- Daftar item pesanan -->
-            <LinearLayout
-                android:id="@+id/layoutOrderItems"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                />
+                android:layout_height="150dp"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:id="@+id/layoutOrderItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </ScrollView>
+
 
             <!-- Total harga -->
             <TextView
@@ -292,7 +250,22 @@
                 android:layout_marginTop="8dp"
                 />
 
+
+
+
         </LinearLayout>
+        <Button
+            android:id="@+id/btnOrdery"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginHorizontal="14dp"
+            android:text="ORDER"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_card" />
 
     </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ class BookingActivity : AppCompatActivity() {
 
     private lateinit var textDescription: TextView
     private lateinit var btnWhatsapp: Button
+    private lateinit var btnBackBook: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +22,14 @@ class BookingActivity : AppCompatActivity() {
         // Inisialisasi View
         textDescription = findViewById(R.id.text_description)
         btnWhatsapp = findViewById(R.id.btn_whatsapp)
+        btnBackBook = findViewById(R.id.btn_back)
 
         // Set aksi ketika tombol WhatsApp ditekan
+
+        btnBackBook.setOnClickListener {
+            finish()
+        }
+
         btnWhatsapp.setOnClickListener {
             val phoneNumber = "6281358213582" // Ganti dengan nomor WhatsApp tujuan, pakai format internasional tanpa "+"
             openWhatsApp(phoneNumber)
