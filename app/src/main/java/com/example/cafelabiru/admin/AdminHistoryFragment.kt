@@ -1,5 +1,6 @@
 package com.example.cafelabiru.admin
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -59,8 +60,12 @@ class AdminHistoryFragment : Fragment() {
                 }
 
                 rvHistory.adapter = AdminOrderAdapter(confirmedOrders, userIdsList) { userId, orderId ->
-                    Toast.makeText(requireContext(), "Clicked history order $orderId of user $userId", Toast.LENGTH_SHORT).show()
-                    // Bisa tambah intent ke detail order di sini
+                    val intent = Intent(requireContext(), AdminOrderStatusActivity::class.java).apply {
+                        putExtra("USER_ID", userId)
+                        putExtra("ORDER_ID", orderId)
+                    }
+                    startActivity(intent)
+
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.example.cafelabiru.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -116,8 +117,13 @@ class AdminHomeFragment : Fragment() {
 
                 // **PENTING: Beri lambda onItemClick di sini**
                 rvOrders.adapter = AdminOrderAdapter(ordersList, userIdsList) { userId, orderId ->
-                    Toast.makeText(requireContext(), "Clicked order $orderId of user $userId", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), AdminOrderStatusActivity::class.java).apply {
+                        putExtra("USER_ID", userId)
+                        putExtra("ORDER_ID", orderId)
+                    }
+                    startActivity(intent)
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
