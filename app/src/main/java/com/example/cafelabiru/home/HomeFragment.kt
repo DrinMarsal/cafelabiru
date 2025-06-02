@@ -1,5 +1,6 @@
 package com.example.cafelabiru.home
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -42,6 +44,24 @@ class HomeFragment : Fragment() {
 
         val tvName: TextView = view.findViewById(R.id.tv_name)
         val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Keluar Aplikasi")
+                        .setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            requireActivity().finishAffinity()
+                        }
+                        .setNegativeButton("Tidak") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+            }
+        )
 
 
 

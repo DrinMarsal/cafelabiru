@@ -1,6 +1,8 @@
 package com.example.cafelabiru
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -70,6 +72,22 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, SignupActivity::class.java))
         }
     }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Keluar Aplikasi")
+        builder.setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+        builder.setPositiveButton("Ya") { _, _ ->
+            finishAffinity()
+        }
+        builder.setNegativeButton("Tidak") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
+    }
+
+
 
     private fun loginUser(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
