@@ -36,18 +36,6 @@ class TakeawayActivity : AppCompatActivity() {
             startActivityForResult(intent, DeliveryActivity.REQUEST_CODE_PICK_OUTLET)
         }
 
-        binding.llDeliveryTime.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val hour = calendar.get(Calendar.HOUR_OF_DAY)
-            val minute = calendar.get(Calendar.MINUTE)
-
-            val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
-                val formattedTime = String.format("%02d:%02d", selectedHour, selectedMinute)
-                binding.tvDeliveryTime.text = formattedTime
-            }, hour, minute, true)
-
-            timePickerDialog.show()
-        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -57,10 +45,8 @@ class TakeawayActivity : AppCompatActivity() {
 
             // update UI di outletCard (pastikan di layout ada TextView dengan id berikut)
             val tvName = binding.outletCard.findViewById<TextView>(R.id.tvOutletName)
-            val tvDistance = binding.outletCard.findViewById<TextView>(R.id.tvOutletDistance)
 
             tvName.text = outletName
-            tvDistance.text = outletDistance
         }
     }
 }
