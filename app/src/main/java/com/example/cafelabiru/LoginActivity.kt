@@ -149,13 +149,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        val firebaseUser = auth.currentUser
-        if (currentUser != null) {
-            updateUi(firebaseUser)
-            finish()
-        }
+        // Tidak perlu cek currentUser lagi, sudah dicek di SplashActivity
     }
+
 
     private fun updateUi(user: FirebaseUser?) {
         val userId = user?.uid ?: return

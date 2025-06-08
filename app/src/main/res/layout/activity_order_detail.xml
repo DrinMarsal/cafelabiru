@@ -21,10 +21,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ScrollView
+    <!-- Scrollable Content -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintBottom_toTopOf="@id/layoutBottomSection"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,13 +148,14 @@
                 android:textColor="#666666"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Order Items RecyclerView -->
+            <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:nestedScrollingEnabled="false"
-                android:layout_marginBottom="20dp" />
+                android:overScrollMode="never" />
 
             <!-- Price Summary -->
             <LinearLayout
@@ -185,7 +187,6 @@
                         android:text="Rp59.000"
                         android:textSize="14sp"
                         android:textColor="#000000" />
-
                 </LinearLayout>
 
                 <!-- PPN -->
@@ -210,7 +211,6 @@
                         android:text="Rp6.490"
                         android:textSize="14sp"
                         android:textColor="#000000" />
-
                 </LinearLayout>
 
                 <!-- Delivery Fee -->
@@ -235,7 +235,6 @@
                         android:text="Rp7.000"
                         android:textSize="14sp"
                         android:textColor="#000000" />
-
                 </LinearLayout>
 
                 <!-- Divider -->
@@ -268,14 +267,11 @@
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="#000000" />
-
                 </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>
-
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Section -->
     <LinearLayout
@@ -313,7 +309,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#000000" />
-
         </LinearLayout>
 
         <Button
@@ -324,7 +319,6 @@
             android:textColor="@android:color/white"
             android:backgroundTint="#0049A2"
             android:layout_gravity="center_vertical" />
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.cafelabiru.admin
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +54,24 @@ class AdminHomeFragment : Fragment() {
                 }
             })
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Keluar Aplikasi")
+                        .setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            requireActivity().finishAffinity()
+                        }
+                        .setNegativeButton("Tidak") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+            }
+        )
 
         val rvOrders: RecyclerView = view.findViewById(R.id.rv_orders_admin)
         rvOrders.layoutManager = LinearLayoutManager(requireContext())

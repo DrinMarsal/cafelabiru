@@ -137,6 +137,7 @@ class OrderDetailActivity : AppCompatActivity() {
         }
         binding.recyclerViewOrder.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewOrder.adapter = adapter
+        binding.recyclerViewOrder.isNestedScrollingEnabled = false // <- tambahkan ini
     }
 
     private fun updateRecyclerView() {
