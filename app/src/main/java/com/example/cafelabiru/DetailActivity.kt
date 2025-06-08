@@ -100,7 +100,6 @@ class DetailActivity : AppCompatActivity() {
         android.util.Log.d("DetailActivity", "Mulai fetch data untuk menuId: $menuId")
 
         if (menuId == null) {
-            Toast.makeText(this, "menuId tidak ditemukan", Toast.LENGTH_SHORT).show()
             return
         }
 

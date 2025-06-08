@@ -1,5 +1,6 @@
 package com.example.cafelabiru.profile
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -13,6 +14,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.cafelabiru.LoginActivity
 import com.example.cafelabiru.MapsActivity
@@ -69,6 +71,24 @@ class ProfileFragment : Fragment() {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Keluar Aplikasi")
+                        .setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            requireActivity().finishAffinity()
+                        }
+                        .setNegativeButton("Tidak") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+            }
+        )
 
         btnEditAddress.setOnClickListener {
             openMapsActivity()

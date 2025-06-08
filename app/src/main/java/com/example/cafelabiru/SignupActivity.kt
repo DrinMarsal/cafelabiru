@@ -1,9 +1,11 @@
 package com.example.cafelabiru
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -71,10 +74,48 @@ class SignupActivity : AppCompatActivity() {
 
             if (userName.isBlank() || email.isBlank() || password.isBlank()) {
                 Toast.makeText(this, "Please fill all details", Toast.LENGTH_SHORT).show()
+            } else if (!binding.termsCheck.isChecked) {
+                Toast.makeText(this, "Please accept the Terms and Conditions", Toast.LENGTH_SHORT).show()
             } else {
                 createAccount(email, password)
             }
         }
+        binding.termsLink.setOnClickListener {
+            val termsText = """
+        1. Penggunaan Aplikasi
+        Aplikasi ini ditujukan untuk melakukan pemesanan makanan dan minuman secara online dari Cafe Labiru.
+
+        2. Akurasi Informasi
+        Kami berusaha memberikan informasi menu, harga, dan ketersediaan produk seakurat mungkin. Namun, perubahan sewaktu-waktu dapat terjadi tanpa pemberitahuan sebelumnya.
+
+        3. Privasi Pengguna
+        Data pribadi yang Anda masukkan akan dijaga kerahasiaannya dan hanya digunakan untuk keperluan pemesanan dan layanan pelanggan.
+
+        4. Pembayaran
+        Transaksi pembayaran dilakukan sesuai dengan metode yang tersedia. Pastikan informasi pembayaran Anda benar dan sah.
+
+        5. Tanggung Jawab
+        Cafe Labiru tidak bertanggung jawab atas kesalahan pemesanan yang disebabkan oleh pengguna, seperti alamat pengantaran yang salah atau kesalahan input data.
+
+        Dengan menggunakan aplikasi ini, Anda dianggap telah membaca dan menyetujui semua syarat dan ketentuan yang berlaku.
+    """.trimIndent()
+
+            AlertDialog.Builder(this)
+                .setTitle("Terms and Conditions")
+                .setMessage(termsText)
+                .setPositiveButton("Saya Mengerti", null)
+                .show()
+        }
+
+
+//        binding.termsLink.setOnClickListener {
+//            AlertDialog.Builder(this)
+//                .setTitle("Terms and Conditions")
+//                .setMessage("Here are the terms and conditions...\n\n1. You agree not to misuse this app.\n2. We don't store personal data for unauthorized use.\n3. Use the app responsibly.")
+//                .setPositiveButton("I Understand", null)
+//                .show()
+//        }
+
     }
 
     private val launcher =

@@ -78,7 +78,7 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
             tvNameDet = findViewById(R.id.tv_name_det)
             tvNoDet = findViewById(R.id.tv_no_det)
             btnOrderDetails = findViewById(R.id.btnOrderDetails)
-            recyclerView = findViewById(R.id.recyclerViewOrder) // INI YANG PENTING!
+            recyclerView = findViewById(R.id.recyclerViewOrder)
         } catch (e: Exception) {
             Log.e("OrderStatusActivity", "Error initializing views: ${e.message}")
             Toast.makeText(this, "Error loading interface", Toast.LENGTH_SHORT).show()

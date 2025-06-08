@@ -52,7 +52,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
@@ -62,7 +62,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/btnEditName"
-                    android:hint="Awikoakwoaw"
+                    android:hint="Nama"
+                    android:background="@android:color/transparent"
                     android:textColor="@color/black"
                     />
 
@@ -87,7 +88,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
@@ -98,8 +99,9 @@
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/btnEditEmail"
                     android:textColor="@color/black"
-                    android:hint="awiakwoakw@gmail.com"
+                    android:hint="email@gmail.com"
                     android:enabled="false"
+                    android:background="@android:color/transparent"
                     android:inputType="textEmailAddress" />
 
                 <ImageButton
@@ -123,7 +125,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
@@ -133,7 +135,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/btnEditAddress"
-                    android:hint="pekanbaru sonoan dikit"
+                    android:hint="Jl.Simpang Baru"
+                    android:background="@android:color/transparent"
                     android:textColor="@color/black"
                     android:enabled="false" />
 
@@ -158,7 +161,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_card"
                 android:padding="12dp">
 
@@ -167,6 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
+                    android:background="@android:color/transparent"
                     android:layout_toStartOf="@+id/btnEditPhone"
                     android:hint="(+62)-88888"
                     android:inputType="phone" />

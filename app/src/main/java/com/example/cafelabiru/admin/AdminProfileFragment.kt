@@ -1,5 +1,6 @@
 package com.example.cafelabiru.admin
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import com.example.cafelabiru.LoginActivity
 import com.example.cafelabiru.MapsActivity
 import com.example.cafelabiru.R
@@ -95,6 +97,24 @@ class AdminProfileFragment : Fragment() {
                 saveUserPhone(etPhone.text.toString())
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Keluar Aplikasi")
+                        .setMessage("Apakah Anda yakin ingin keluar dari aplikasi?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            requireActivity().finishAffinity()
+                        }
+                        .setNegativeButton("Tidak") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+            }
+        )
     }
 
     override fun onResume() {
