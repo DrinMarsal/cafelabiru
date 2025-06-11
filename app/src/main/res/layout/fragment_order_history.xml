@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="history.OrderHistoryFragment"
+    android:background="@android:color/white"
     android:fitsSystemWindows="true">
 
     <TextView

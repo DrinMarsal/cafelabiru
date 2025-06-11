@@ -3,10 +3,13 @@ package com.example.cafelabiru
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafelabiru.model.OrderMenuItem
@@ -19,6 +22,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
+import java.text.NumberFormat
+import java.util.Locale
 
 class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -28,11 +33,28 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var tvNameDet: TextView
     private lateinit var tvNoDet: TextView
     private lateinit var btnOrderDetails: Button
-    private lateinit var recyclerView: RecyclerView // Pastikan ini diinisialisasi
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var tvSubtotal: TextView
+    private lateinit var tvPpn: TextView
+    private lateinit var tvOngkir: TextView
+    private lateinit var tvTotal: TextView
+
+    private val numberFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+
+    init {
+        // Configure currency format for Indonesian Rupiah
+        numberFormat.maximumFractionDigits = 0
+        numberFormat.currency = java.util.Currency.getInstance("IDR")
+    }
+
 
     private var orderAddress: String? = null
     private lateinit var googleMap: GoogleMap
     private var isMapReady = false
+
+    // Tambahkan variabel untuk menyimpan status order
+    private var currentOrderStatus: String = "pending"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +84,8 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
         // Inisialisasi Map
         initMap()
 
-        // Fetch order and user data
+        listenToOrderStatus(userId, orderId)
+        // Fetch order and user data - ini akan memanggil updateStatusUI() dengan status yang benar
         fetchOrderAndUserName(userId, orderId)
 
         btnOrderDetails.setOnClickListener {
@@ -79,6 +102,10 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
             tvNoDet = findViewById(R.id.tv_no_det)
             btnOrderDetails = findViewById(R.id.btnOrderDetails)
             recyclerView = findViewById(R.id.recyclerViewOrder)
+            tvSubtotal = findViewById(R.id.tv_subtotal)
+            tvPpn = findViewById(R.id.tv_ppn)
+            tvOngkir = findViewById(R.id.tv_ongkir)
+            tvTotal = findViewById(R.id.tv_total)
         } catch (e: Exception) {
             Log.e("OrderStatusActivity", "Error initializing views: ${e.message}")
             Toast.makeText(this, "Error loading interface", Toast.LENGTH_SHORT).show()
@@ -146,6 +173,9 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
                 try {
                     val orderModel = orderSnapshot.getValue(OrderModel::class.java)
                     if (orderModel != null) {
+                        // Simpan status order
+                        currentOrderStatus = orderModel.status ?: "pending"
+
                         userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(userSnapshot: DataSnapshot) {
                                 val userModel = userSnapshot.getValue(UserModel::class.java)
@@ -174,18 +204,84 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
+    private fun updateStatusUI(status: String) {
+        // Pastikan semua view ada sebelum mengupdate
+        val step1 = findViewById<ImageView>(R.id.step1Icon) ?: return
+        val step2 = findViewById<ImageView>(R.id.step2Icon) ?: return
+        val step3 = findViewById<ImageView>(R.id.step3Icon) ?: return
+        val line1 = findViewById<View>(R.id.line1) ?: return
+        val line2 = findViewById<View>(R.id.line2) ?: return
+
+        val blue = ContextCompat.getColor(this, R.color.color_700)
+        val gray = ContextCompat.getColor(this, android.R.color.darker_gray)
+
+        Log.d("OrderStatusActivity", "Updating status UI with status: $status")
+
+        when (status.lowercase()) {
+            "pending" -> {
+                step1.setColorFilter(blue)
+                step2.setColorFilter(gray)
+                step3.setColorFilter(gray)
+                line1.setBackgroundColor(gray)
+                line2.setBackgroundColor(gray)
+            }
+            "accepted", "preparing" -> {
+                step1.setColorFilter(blue)
+                step2.setColorFilter(blue)
+                step3.setColorFilter(gray)
+                line1.setBackgroundColor(blue)
+                line2.setBackgroundColor(gray)
+            }
+            "completed", "delivered" -> {
+                step1.setColorFilter(blue)
+                step2.setColorFilter(blue)
+                step3.setColorFilter(blue)
+                line1.setBackgroundColor(blue)
+                line2.setBackgroundColor(blue)
+            }
+            else -> {
+                // Default ke pending jika status tidak dikenali
+                step1.setColorFilter(blue)
+                step2.setColorFilter(gray)
+                step3.setColorFilter(gray)
+                line1.setBackgroundColor(gray)
+                line2.setBackgroundColor(gray)
+            }
+        }
+    }
+
     private fun loadOrderStatus(order: OrderModel, userName: String) {
         try {
-            tvStatus.text = "Order #${order.orderId}\nStatus: ${order.status}"
-            val dateFormatted = android.text.format.DateFormat.format("dd MMM yyyy HH:mm", order.orderDate)
+            // Update status text dengan informasi yang lebih jelas
+            val statusText = when(order.status?.lowercase()) {
+                "pending" -> "[${order.orderId}] Preparing your order"
+                "accepted", "preparing" -> "[${order.orderId}] Order is being prepared"
+                "completed", "delivered" -> "[${order.orderId}] Order completed"
+                else -> "Order status: ${order.status} + [${order.orderId}]"
+            }
+
+            tvStatus.text = statusText
+            val dateFormatted = android.text.format.DateFormat.format("HH:mm, dd MMM yyyy", order.orderDate)
             tvOrderDate.text = dateFormatted
 
             tvAddressDet.text = order.customerAddressDetail ?: "Alamat tidak tersedia"
             tvNameDet.text = userName
             tvNoDet.text = order.customerPhone ?: "Nomor tidak tersedia"
-
             orderAddress = order.customerAddressDetail
+
+            tvSubtotal.text = numberFormat.format(order.subTotal)
+            tvPpn.text = numberFormat.format(order.ppn)
+            tvOngkir.text = numberFormat.format(order.deliveryFee)
+            tvTotal.text = numberFormat.format(order.total)
+
+
+
+            // Update status UI dengan status yang benar
+            updateStatusUI(order.status ?: "pending")
             updateMapLocation()
+
+
+
         } catch (e: Exception) {
             Log.e("OrderStatusActivity", "Error loading order status: ${e.message}")
         }
@@ -196,6 +292,36 @@ class OrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
         isMapReady = true
         updateMapLocation()
     }
+
+    private var firstTimeLoad = true
+
+    private fun listenToOrderStatus(userId: String, orderId: String) {
+        val ref = FirebaseDatabase.getInstance()
+            .getReference("orders")
+            .child(userId)
+            .child(orderId)
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val order = snapshot.getValue(OrderModel::class.java)
+                    if (order != null) {
+                        if (firstTimeLoad) {
+                            initViews()
+                            firstTimeLoad = false
+                        }
+                        fetchOrderAndUserName(userId, orderId)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("OrderStatusActivity", "Error: ${error.message}")
+            }
+        })
+    }
+
+
 
     private fun updateMapLocation() {
         if (!::googleMap.isInitialized || !isMapReady || orderAddress.isNullOrEmpty()) return

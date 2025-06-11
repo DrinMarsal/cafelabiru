@@ -76,28 +76,28 @@ class HomeFragment : Fragment() {
         val recom2 = view.findViewById<LinearLayout>(R.id.recom2)
         recom2.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("menuIdFilter", "M012") // kirim data menuId
+            intent.putExtra("menuIdFilter", "M026") // kirim data menuId
             startActivity(intent)
         }
 
         val recom3 = view.findViewById<LinearLayout>(R.id.recom3)
         recom3.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("menuIdFilter", "M014") // kirim data menuId
+            intent.putExtra("menuIdFilter", "M036") // kirim data menuId
             startActivity(intent)
         }
 
         val recom4 = view.findViewById<LinearLayout>(R.id.recom4)
         recom4.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("menuIdFilter", "M008") // kirim data menuId
+            intent.putExtra("menuIdFilter", "M027") // kirim data menuId
             startActivity(intent)
         }
 
         val recom1 = view.findViewById<LinearLayout>(R.id.recom1)
         recom1.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
-            intent.putExtra("menuIdFilter", "M007") // kirim data menuId
+            intent.putExtra("menuIdFilter", "M024") // kirim data menuId
             startActivity(intent)
         }
 

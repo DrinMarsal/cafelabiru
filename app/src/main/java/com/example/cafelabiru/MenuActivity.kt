@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -123,8 +124,8 @@ class MenuActivity : AppCompatActivity() {
             val itemView = inflater.inflate(R.layout.item_order_summary, layoutOrderItems, false)
             val tvName = itemView.findViewById<TextView>(R.id.tvOrderItemName)
             val tvQty = itemView.findViewById<TextView>(R.id.tvOrderQty)
-            val btnPlus = itemView.findViewById<Button>(R.id.btnPlus)
-            val btnMinus = itemView.findViewById<Button>(R.id.btnMinus)
+            val btnPlus = itemView.findViewById<ImageButton>(R.id.btnPlus)
+            val btnMinus = itemView.findViewById<ImageButton>(R.id.btnMinus)
 
             tvName.text = food.name
             tvQty.text = qty.toString()

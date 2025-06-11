@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.cafelabiru.R
 import com.example.cafelabiru.model.OrderModel
 import java.text.NumberFormat
@@ -31,6 +33,8 @@ class OrderHistoryAdapter(
         val tvMenuNames: TextView = itemView.findViewById(R.id.tv_menu_names)
         val tvTotalPrice: TextView = itemView.findViewById(R.id.tv_harga)
         val tvOrderDate: TextView = itemView.findViewById(R.id.tvOrderDate)
+        val tvOrderId: TextView = itemView.findViewById(R.id.tv_orderid)
+
 
         init {
             itemView.setOnClickListener {
@@ -65,6 +69,9 @@ class OrderHistoryAdapter(
             }
         }
 
+        holder.tvOrderId.text = order.orderId
+
+
         holder.tvMenuNames.text = menuNames
 
         // Format price
@@ -77,20 +84,20 @@ class OrderHistoryAdapter(
         // Set image (use first menu item's image or default)
         if (order.menuItems.isNotEmpty()) {
             val firstMenuItem = order.menuItems[0]
-            // If you have image loading logic, implement it here
-            // For now, using default image
-            holder.imgFood.setImageResource(R.drawable.nasgor) // Default image
+            val imageUrl = firstMenuItem.imageResId // asumsinya ini URL
+
+            Glide.with(holder.itemView.context)
+                .load(imageUrl)
+                .transform(RoundedCorners(24))
+                .placeholder(R.drawable.placeholder_food) // gambar sementara saat loading
+                .error(R.drawable.nasgor) // fallback jika gagal
+                .into(holder.imgFood)
         } else {
-            holder.imgFood.setImageResource(R.drawable.nasgor) // Default image
+            holder.imgFood.setImageResource(R.drawable.nasgor)
         }
 
+
         // Add visual indicator based on order status
-        val statusColor = when (order.status) {
-            "pending" -> R.color.orange
-            "accepted" -> R.color.yellow
-            "completed" -> R.color.green
-            else -> R.color.gray
-        }
 
         // You can add a status indicator view if needed
     }
@@ -109,23 +116,4 @@ class OrderHistoryAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateList(newOrders: List<OrderModel>) {
-        val oldSize = orders.size
-        orders = newOrders
-
-        when {
-            oldSize == 0 && newOrders.isNotEmpty() -> {
-                notifyItemRangeInserted(0, newOrders.size)
-            }
-            oldSize > newOrders.size -> {
-                notifyItemRangeRemoved(newOrders.size, oldSize - newOrders.size)
-                if (newOrders.isNotEmpty()) {
-                    notifyItemRangeChanged(0, newOrders.size)
-                }
-            }
-            else -> {
-                notifyDataSetChanged()
-            }
-        }
-    }
 }

@@ -90,7 +90,7 @@ class AdminHomeFragment : Fragment() {
         tvTotalOrderCount: TextView
     ) {
         val ordersRef = FirebaseDatabase.getInstance().getReference("orders")
-        ordersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        ordersRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 ordersList.clear()
                 userIdsList.clear()

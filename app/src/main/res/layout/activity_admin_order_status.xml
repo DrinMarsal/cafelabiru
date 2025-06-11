@@ -297,7 +297,7 @@
                         android:layout_height="wrap_content"
                         android:text="Rp72.490"
                         android:textStyle="bold"
-                        android:textColor="#BBBBBB"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
 

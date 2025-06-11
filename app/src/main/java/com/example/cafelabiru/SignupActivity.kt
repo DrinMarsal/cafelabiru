@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -100,22 +101,22 @@ class SignupActivity : AppCompatActivity() {
         Dengan menggunakan aplikasi ini, Anda dianggap telah membaca dan menyetujui semua syarat dan ketentuan yang berlaku.
     """.trimIndent()
 
-            AlertDialog.Builder(this)
-                .setTitle("Terms and Conditions")
-                .setMessage(termsText)
-                .setPositiveButton("Saya Mengerti", null)
-                .show()
+            val bottomSheet = BottomSheetDialog(this)
+            val view = layoutInflater.inflate(R.layout.bottomsheet_terms, null)
+
+            val tvContent = view.findViewById<TextView>(R.id.tvTermsContent)
+            val btnClose = view.findViewById<Button>(R.id.btnClose) // pastikan ID sesuai
+
+            tvContent.text = termsText
+
+            btnClose.setOnClickListener {
+                binding.termsCheck.isChecked = true
+                bottomSheet.dismiss()
+            }
+
+            bottomSheet.setContentView(view)
+            bottomSheet.show()
         }
-
-
-//        binding.termsLink.setOnClickListener {
-//            AlertDialog.Builder(this)
-//                .setTitle("Terms and Conditions")
-//                .setMessage("Here are the terms and conditions...\n\n1. You agree not to misuse this app.\n2. We don't store personal data for unauthorized use.\n3. Use the app responsibly.")
-//                .setPositiveButton("I Understand", null)
-//                .show()
-//        }
-
     }
 
     private val launcher =

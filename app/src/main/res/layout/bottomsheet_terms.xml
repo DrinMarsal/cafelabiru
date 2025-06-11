@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/bg_card"
     android:padding="20dp">
 
     <TextView
@@ -19,4 +20,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="1. No misuse\n2. Respect data\n3. Use responsibly..." />
+
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card"
+        android:text="Saya Mengerti"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>

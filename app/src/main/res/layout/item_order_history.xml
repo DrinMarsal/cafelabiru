@@ -26,6 +26,8 @@
             android:background="@drawable/bg_rounded"
             android:scaleType="centerCrop"
             android:src="@drawable/nasgor"
+            android:elevation="3dp"
+            android:layout_margin="6dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,6 +39,7 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
+            android:minLines="2"
             android:text="Nasi Goreng Komplit Labiru Style Dan Semua "
             android:textColor="@android:color/black"
             android:textSize="16sp"
@@ -77,7 +80,7 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_marginEnd="4dp"
-            android:layout_marginTop="4sp"
+            android:layout_marginTop="8sp"
             android:backgroundTint="@color/color_700"
             android:background="@drawable/bg_card"
             app:layout_constraintBottom_toBottomOf="@id/tv_harga"
@@ -85,12 +88,12 @@
             app:layout_constraintTop_toTopOf="@id/tv_harga" />
 
         <TextView
-            android:id="@+id/tv_status"
+            android:id="@+id/tv_orderid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded"
             android:padding="4dp"
-            android:text="Cash"
+            android:text="ORD3468"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:layout_marginEnd="12dp"

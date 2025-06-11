@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@android:color/white"
     android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
         <!-- Main Card Container - TAMBAHKAN TAG PEMBUKA YANG HILANG -->
@@ -28,18 +29,18 @@
                 <!-- Food Image Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="240dp"
                     >
 
                     <ImageView
                         android:id="@+id/ivImage"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_centerInParent="true"
+                        android:layout_height="230dp"
+                        android:layout_margin="4dp"
+                        android:elevation="4sp"
+                        android:background="@drawable/bg_roundedu"
                         android:src="@drawable/ic_nasi_salmon"
-                        android:scaleType="centerCrop"
-                        android:background="@android:color/transparent"
-                        android:clipToOutline="true"/>
+                        android:scaleType="fitCenter" />
 
                 </LinearLayout>
 
@@ -66,7 +67,7 @@
                         android:id="@+id/tvPortion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1 portion (for 1 people)"
+                        android:text="Description"
                         android:textSize="14sp"
                         android:textColor="#666666"
                         android:layout_marginBottom="16dp" />
@@ -105,7 +106,7 @@
                                 android:id="@+id/tvLearnMore"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="..."
+                                android:text=":D"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:layout_marginTop="8dp"
@@ -131,19 +132,7 @@
                             android:gravity="center_vertical"
                             android:layout_marginEnd="24dp">
 
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_time"
-                                android:layout_marginEnd="4dp" />
 
-                            <TextView
-                                android:id="@+id/tvTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="7 minutes"
-                                android:textSize="14sp"
-                                android:textColor="#666666" />
 
                         </LinearLayout>
 
@@ -227,7 +216,7 @@
             <!-- Daftar item pesanan -->
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:fillViewport="true">
 
                 <LinearLayout
@@ -246,12 +235,10 @@
                 android:text="Total: Rp0"
                 android:textStyle="bold"
                 android:textSize="16sp"
+                android:textColor="@color/black"
                 android:gravity="end"
                 android:layout_marginTop="8dp"
                 />
-
-
-
 
         </LinearLayout>
         <Button

@@ -21,6 +21,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.*
+import java.text.NumberFormat
+import java.util.Locale
 
 class AdminOrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -47,6 +49,12 @@ class AdminOrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Inisialisasi semua view termasuk RecyclerView
         initViews()
+
+        val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID")).apply {
+            maximumFractionDigits = 0
+            currency = java.util.Currency.getInstance("IDR")
+        }
+
 
         val userId = intent.getStringExtra("USER_ID")
         val orderId = intent.getStringExtra("ORDER_ID")
@@ -193,15 +201,21 @@ class AdminOrderStatusActivity : AppCompatActivity(), OnMapReadyCallback {
             val dateFormatted = android.text.format.DateFormat.format("dd MMM yyyy HH:mm", order.orderDate)
             tvOrderDate.text = dateFormatted
 
+            val currencyFormat = NumberFormat.getCurrencyInstance(Locale("id", "ID")).apply {
+                maximumFractionDigits = 0
+                currency = java.util.Currency.getInstance("IDR")
+            }
+
             tvAddressDet.text = order.customerAddressDetail ?: "Alamat tidak tersedia"
             tvNameDet.text = userName
             tvNoDet.text = order.customerPhone ?: "Nomor tidak tersedia"
 
             orderAddress = order.customerAddressDetail
-            tvSubtotal.text = "Rp%.0f".format(order.subTotal.toDouble())
-            tvPpn.text = "Rp%.0f".format(order.ppn.toDouble())
-            tvOngkir.text = "Rp%.0f".format(order.deliveryFee.toDouble())
-            tvTotal.text = "Rp%.0f".format(order.total.toDouble())
+            tvSubtotal.text = currencyFormat.format(order.subTotal)
+            tvPpn.text = currencyFormat.format(order.ppn)
+            tvOngkir.text = currencyFormat.format(order.deliveryFee)
+            tvTotal.text = currencyFormat.format(order.total)
+
             updateMapLocation()
         } catch (e: Exception) {
             Log.e("OrderStatusActivity", "Error loading order status: ${e.message}")

@@ -71,7 +71,7 @@
                 android:id="@+id/ed_signup_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@drawable/bg_card"
                 android:inputType="text"
                 android:paddingVertical="8dp"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -100,7 +100,7 @@
                 android:id="@+id/ed_signup_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@drawable/bg_card"
                 android:inputType="textEmailAddress"
                 android:paddingVertical="8dp"
                 tools:ignore="SpeakableTextPresentCheck" />
@@ -130,13 +130,14 @@
                 android:id="@+id/ed_signup_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@drawable/bg_card"
                 android:inputType="textPassword"
                 android:paddingVertical="8dp"
                 tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
+            android:id="@+id/boooa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -167,23 +168,12 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/tv_forgot_password"
-            android:textColor="@color/color_700"
-            app:layout_constraintEnd_toEndOf="@id/ed_layout_password"
-            app:layout_constraintTop_toBottomOf="@id/ed_layout_password" />
-
         <Button
             android:id="@+id/btn_signup"
             android:layout_width="240dp"
             android:layout_height="53dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="44dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/bluebutton"
             android:text="@string/btn_signup"
@@ -191,7 +181,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_forgot_password" />
+            app:layout_constraintTop_toBottomOf="@id/boooa" />
 
         <LinearLayout
             android:id="@+id/ll_signup_here"

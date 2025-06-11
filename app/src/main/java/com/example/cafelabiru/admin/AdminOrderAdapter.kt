@@ -1,5 +1,6 @@
 package com.example.cafelabiru.admin
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.cafelabiru.R
 import com.example.cafelabiru.model.OrderModel
 import com.google.firebase.database.FirebaseDatabase
@@ -27,6 +30,22 @@ class AdminOrderAdapter(
         val tvDelivery: TextView = itemView.findViewById(R.id.tv_delivery)
         val btnAccept: Button = itemView.findViewById(R.id.btn_accept)
         val imgFood: ImageView = itemView.findViewById(R.id.img_food)
+    }
+
+    private fun setOrderImage(order: OrderModel, imageView: ImageView) {
+        if (order.menuItems.isNotEmpty()) {
+            val firstMenuItem = order.menuItems[0]
+            val imageUrl = firstMenuItem.imageResId // asumsinya ini URL
+
+            Glide.with(imageView.context)
+                .load(imageUrl)
+                .transform(RoundedCorners(24))
+                .placeholder(R.drawable.placeholder_food) // gambar sementara saat loading
+                .error(R.drawable.nasgor) // fallback jika gagal
+                .into(imageView)
+        } else {
+            imageView.setImageResource(R.drawable.nasgor)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -80,15 +99,25 @@ class AdminOrderAdapter(
                 )
 
                 holder.btnAccept.setOnClickListener {
-                    val dbRef = FirebaseDatabase.getInstance().getReference("orders")
-                    dbRef.child(userId).child(order.orderId).child("status").setValue("completed")
-                        .addOnSuccessListener {
-                            Toast.makeText(holder.itemView.context, "Pesanan selesai", Toast.LENGTH_SHORT).show()
+                    AlertDialog.Builder(holder.itemView.context)
+                        .setTitle("Selesaikan Pesanan")
+                        .setMessage("Apakah Anda yakin pesanan ini sudah selesai?")
+                        .setPositiveButton("Ya") { _, _ ->
+                            val dbRef = FirebaseDatabase.getInstance().getReference("orders")
+                            dbRef.child(userId).child(order.orderId).child("status").setValue("completed")
+                                .addOnSuccessListener {
+                                    Toast.makeText(holder.itemView.context, "Pesanan selesai", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { error ->
+                                    Toast.makeText(holder.itemView.context, "Gagal menyelesaikan pesanan: ${error.message}", Toast.LENGTH_SHORT).show()
+                                }
                         }
-                        .addOnFailureListener { error ->
-                            Toast.makeText(holder.itemView.context, "Failed to complete order: ${error.message}", Toast.LENGTH_SHORT).show()
+                        .setNegativeButton("Tidak") { dialog, _ ->
+                            dialog.dismiss()
                         }
+                        .show()
                 }
+
             }
             "completed" -> {
                 holder.btnAccept.text = "Hapus"
@@ -119,8 +148,19 @@ class AdminOrderAdapter(
             }
         }
 
-        // HAPUS BAGIAN INI - INI YANG MENYEBABKAN MASALAH
-        // holder.btnAccept.setOnClickListener { ... }
+        if (order.menuItems.isNotEmpty()) {
+            val firstMenuItem = order.menuItems[0]
+            val imageUrl = firstMenuItem.imageResId // asumsinya ini URL
+
+            Glide.with(holder.itemView.context)
+                .load(imageUrl)
+                .transform(RoundedCorners(24))
+                .placeholder(R.drawable.placeholder_food) // gambar sementara saat loading
+                .error(R.drawable.nasgor) // fallback jika gagal
+                .into(holder.imgFood) // atau holder.imageView sesuai dengan nama di layout
+        } else {
+            holder.imgFood.setImageResource(R.drawable.nasgor) // atau holder.imageView
+        }
     }
 
     override fun getItemCount() = orders.size

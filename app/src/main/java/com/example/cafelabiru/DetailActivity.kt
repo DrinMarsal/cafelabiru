@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -48,11 +50,13 @@ class DetailActivity : AppCompatActivity() {
 
         userPreferences = UserPreferences(this)
 
+
+
         if (food != null) {
             binding.tvName.text = food.name
             binding.tvDesc.text = food.description
             binding.tvPrice.text = "Rp %.2f".format(food.price)
-
+            binding.tvTotalPrice.text = "Rp %.2f".format(food.price)
             Glide.with(this)
                 .load(food.imageUrl)
                 .into(binding.ivImage)
@@ -75,6 +79,11 @@ class DetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         OrderManager.removeOrderChangeListener(orderChangeListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateOrderSummary()
     }
 
     private fun setupButtons() {
@@ -134,6 +143,9 @@ class DetailActivity : AppCompatActivity() {
 
 
     private fun updateOrderSummary() {
+        android.util.Log.d("DetailActivity", "===== UPDATE ORDER SUMMARY =====")
+
+        // Pastikan menggunakan referensi yang benar ke layout order items
         val layoutOrderItems = binding.layoutOrderSummary.findViewById<LinearLayout>(R.id.layoutOrderItems)
         layoutOrderItems.removeAllViews()
 
@@ -141,12 +153,17 @@ class DetailActivity : AppCompatActivity() {
         val totalPrice = OrderManager.getTotalPrice()
         val inflater = LayoutInflater.from(this)
 
+        android.util.Log.d("DetailActivity", "Order map size: ${orderMap.size}")
+        android.util.Log.d("DetailActivity", "Total price: $totalPrice")
+
         for ((food, qty) in orderMap) {
+            android.util.Log.d("DetailActivity", "Menambahkan item ke layout: ${food.name} x $qty")
+
             val itemView = inflater.inflate(R.layout.item_order_summary, layoutOrderItems, false)
             val tvName = itemView.findViewById<TextView>(R.id.tvOrderItemName)
             val tvQty = itemView.findViewById<TextView>(R.id.tvOrderQty)
-            val btnPlus = itemView.findViewById<Button>(R.id.btnPlus)
-            val btnMinus = itemView.findViewById<Button>(R.id.btnMinus)
+            val btnPlus = itemView.findViewById<ImageButton>(R.id.btnPlus)
+            val btnMinus = itemView.findViewById<ImageButton>(R.id.btnMinus)
 
             tvName.text = food.name
             tvQty.text = qty.toString()
@@ -162,13 +179,30 @@ class DetailActivity : AppCompatActivity() {
             layoutOrderItems.addView(itemView)
         }
 
-        binding.tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+        // FIX: Update total price dengan referensi yang benar
+        try {
+            val tvTotalPrice = binding.layoutOrderSummary.findViewById<TextView>(R.id.tvTotalPrice)
+            if (tvTotalPrice != null) {
+                tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+                android.util.Log.d("DetailActivity", "Total price updated: ${tvTotalPrice.text}")
+            } else {
+                android.util.Log.e("DetailActivity", "tvTotalPrice not found in layoutOrderSummary")
+                // Alternatif: coba cari di binding langsung
+                binding.tvTotalPrice?.text = "Total: Rp %.2f".format(totalPrice)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("DetailActivity", "Error updating total price: ${e.message}")
+            // Fallback: update tvTotalPrice yang ada di binding langsung
+            binding.tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+        }
 
-        // Order summary hanya muncul jika ada item, tombol order selalu tampil
+        // Order summary visibility
         if (OrderManager.isEmpty()) {
-            binding.layoutOrderSummary.visibility = android.view.View.GONE
+            android.util.Log.d("DetailActivity", "Order kosong, menyembunyikan summary")
+            binding.layoutOrderSummary.visibility = View.GONE
         } else {
-            binding.layoutOrderSummary.visibility = android.view.View.VISIBLE
+            android.util.Log.d("DetailActivity", "Order ada, menampilkan summary")
+            binding.layoutOrderSummary.visibility = View.VISIBLE
         }
     }
 
