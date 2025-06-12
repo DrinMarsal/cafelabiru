@@ -65,7 +65,7 @@
                 android:text="Rp59.000"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:layout_gravity="center_vertical"/>
 
             <ImageView

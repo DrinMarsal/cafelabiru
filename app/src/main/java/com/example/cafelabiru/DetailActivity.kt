@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.cafelabiru.databinding.ActivityDetailBinding
 import com.example.cafelabiru.model.FoodModel
 import com.example.cafelabiru.model.OrderMenuItem
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.text.NumberFormat
+import java.util.Locale
 
 class DetailActivity : AppCompatActivity() {
 
@@ -50,15 +53,24 @@ class DetailActivity : AppCompatActivity() {
 
         userPreferences = UserPreferences(this)
 
+        binding.backButtonDetail.setOnClickListener {
+            finish()
+        }
 
+        val formattedPrice = food?.let {
+            NumberFormat.getNumberInstance(Locale("in", "ID"))
+                .format(it.price)
+        }
 
         if (food != null) {
             binding.tvName.text = food.name
             binding.tvDesc.text = food.description
-            binding.tvPrice.text = "Rp %.2f".format(food.price)
-            binding.tvTotalPrice.text = "Rp %.2f".format(food.price)
+            binding.tvPrice.text = "Rp $formattedPrice"
+            binding.tvTotalPrice.text = "Rp $formattedPrice"
+
             Glide.with(this)
                 .load(food.imageUrl)
+                .transform(RoundedCorners(16))
                 .into(binding.ivImage)
         } else {
             binding.tvName.text = "Data tidak tersedia"
@@ -123,9 +135,13 @@ class DetailActivity : AppCompatActivity() {
                         currentFood = item
                         // Tampilkan data di UI DetailActivity
                         binding.tvName.text = item.name
-                        binding.tvPrice.text = item.price.toString()
+                        val formattedPrice = NumberFormat.getNumberInstance(Locale("in", "ID")).format(item.price)
+                        binding.tvPrice.text = "Rp $formattedPrice"
                         binding.tvDesc.text = item.description
-                        Glide.with(this@DetailActivity).load(item.imageUrl).into(binding.ivImage)
+                        Glide.with(this@DetailActivity)
+                            .load(item.imageUrl)
+                            .transform(RoundedCorners(16))
+                            .into(binding.ivImage)
                     } else {
                         android.util.Log.e("DetailActivity", "Item null untuk menuId: $menuId")
                     }
@@ -165,6 +181,7 @@ class DetailActivity : AppCompatActivity() {
             val btnPlus = itemView.findViewById<ImageButton>(R.id.btnPlus)
             val btnMinus = itemView.findViewById<ImageButton>(R.id.btnMinus)
 
+
             tvName.text = food.name
             tvQty.text = qty.toString()
 
@@ -181,19 +198,25 @@ class DetailActivity : AppCompatActivity() {
 
         // FIX: Update total price dengan referensi yang benar
         try {
+            val formattedTotal = NumberFormat.getNumberInstance(Locale("in", "ID")).format(totalPrice)
+
             val tvTotalPrice = binding.layoutOrderSummary.findViewById<TextView>(R.id.tvTotalPrice)
             if (tvTotalPrice != null) {
-                tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+                tvTotalPrice.text = "Total: Rp $formattedTotal"
+
                 android.util.Log.d("DetailActivity", "Total price updated: ${tvTotalPrice.text}")
             } else {
                 android.util.Log.e("DetailActivity", "tvTotalPrice not found in layoutOrderSummary")
                 // Alternatif: coba cari di binding langsung
-                binding.tvTotalPrice?.text = "Total: Rp %.2f".format(totalPrice)
+                binding.tvTotalPrice?.text = "Total: Rp $formattedTotal"
+
             }
         } catch (e: Exception) {
+            val formattedTotal = NumberFormat.getNumberInstance(Locale("in", "ID")).format(totalPrice)
             android.util.Log.e("DetailActivity", "Error updating total price: ${e.message}")
             // Fallback: update tvTotalPrice yang ada di binding langsung
-            binding.tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+            binding.tvTotalPrice.text = "Total: Rp $formattedTotal"
+
         }
 
         // Order summary visibility
@@ -215,7 +238,8 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(intent)
                 val pesan = OrderManager.getOrderSummaryText()
                 val total = OrderManager.getTotalPrice()
-                Toast.makeText(this, "Pesanan:\n$pesan\nTotal: Rp%.2f".format(total), Toast.LENGTH_LONG).show()
+                val formattedTotal = NumberFormat.getNumberInstance(Locale("in", "ID")).format(total)
+                Toast.makeText(this, "Pesanan:\n$pesan\nTotal:  Rp $formattedTotal", Toast.LENGTH_LONG).show()
             }
         }
     }

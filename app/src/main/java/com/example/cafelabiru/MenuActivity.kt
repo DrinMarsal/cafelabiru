@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.cafelabiru.databinding.ActivityMenuBinding
 import com.example.cafelabiru.model.FoodModel
 import com.google.firebase.database.*
+import java.text.NumberFormat
+import java.util.Locale
 
 class MenuActivity : AppCompatActivity() {
 
@@ -45,6 +47,10 @@ class MenuActivity : AppCompatActivity() {
         adapter.setOnAddClickListener { food ->
             OrderManager.addItem(food)
 
+        }
+
+        binding.backButton32.setOnClickListener {
+            finish()
         }
 
         fetchMenuItems()
@@ -130,6 +136,7 @@ class MenuActivity : AppCompatActivity() {
             tvName.text = food.name
             tvQty.text = qty.toString()
 
+
             btnPlus.setOnClickListener {
                 OrderManager.addItem(food)
             }
@@ -143,7 +150,8 @@ class MenuActivity : AppCompatActivity() {
 
         // Update total price - akses tvTotalPrice yang ada di dalam cardOrderSummary
         val tvTotalPrice = binding.cardOrderSummary.findViewById<TextView>(R.id.tvTotalPrice)
-        tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+        val formattedTotal = NumberFormat.getNumberInstance(Locale("in", "ID")).format(totalPrice)
+        tvTotalPrice.text = "Total: Rp $formattedTotal"
 
         // Order summary visibility - gunakan cardOrderSummary langsung
         if (OrderManager.isEmpty()) {

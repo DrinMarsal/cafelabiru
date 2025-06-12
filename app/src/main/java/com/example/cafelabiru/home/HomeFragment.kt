@@ -1,11 +1,16 @@
 package com.example.cafelabiru.home
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -16,34 +21,81 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
-import com.example.cafelabiru.AddMenuActivity
 import com.example.cafelabiru.BookingActivity
-import com.example.cafelabiru.DeliveryActivity
 import com.example.cafelabiru.DetailActivity
 import com.example.cafelabiru.DineInActivity
 import com.example.cafelabiru.MenuActivity
-import com.example.cafelabiru.MenuFragment
 import com.example.cafelabiru.R
-import com.example.cafelabiru.TakeawayActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 class HomeFragment : Fragment() {
 
+    private lateinit var scrollView: HorizontalScrollView
+    private val handler = Handler(Looper.getMainLooper())
+    private var scrollDirection = 1
+    private val scrollStep = 1
+    private val delay: Long = 10
+    private var isUserScrolling = false
+    private val resumeDelay: Long = 3000
+
+    private val runnable = object : Runnable {
+        override fun run() {
+            if (!isUserScrolling) {
+                scrollView.scrollBy(scrollStep * scrollDirection, 0)
+
+                val maxScroll = scrollView.getChildAt(0).measuredWidth - scrollView.width
+                val currentScroll = scrollView.scrollX
+
+                if (currentScroll >= maxScroll) {
+                    scrollDirection = -1
+                } else if (currentScroll <= 0) {
+                    scrollDirection = 1
+                }
+
+                handler.postDelayed(this, delay)
+            }
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         // Ganti dengan nama layout kamu, misal fragment_home.xml
         return inflater.inflate(R.layout.fragment_home, container, false)
+
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val tvName: TextView = view.findViewById(R.id.tv_name)
         val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        scrollView = view.findViewById(R.id.recommended_scroll)
+
+        // Deteksi jika user scroll manual → pause auto-scroll
+        scrollView.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                    isUserScrolling = true
+                    handler.removeCallbacks(runnable)
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    handler.postDelayed({
+                        isUserScrolling = false
+                        handler.post(runnable)
+                    }, resumeDelay)
+                }
+            }
+            false
+        }
+        handler.post(runnable)
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -91,6 +143,20 @@ class HomeFragment : Fragment() {
         recom4.setOnClickListener {
             val intent = Intent(requireContext(), DetailActivity::class.java)
             intent.putExtra("menuIdFilter", "M027") // kirim data menuId
+            startActivity(intent)
+        }
+
+        val recom5 = view.findViewById<LinearLayout>(R.id.recom5)
+        recom5.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("menuIdFilter", "M022") // kirim data menuId
+            startActivity(intent)
+        }
+
+        val recom6 = view.findViewById<LinearLayout>(R.id.recom6)
+        recom6.setOnClickListener {
+            val intent = Intent(requireContext(), DetailActivity::class.java)
+            intent.putExtra("menuIdFilter", "M029") // kirim data menuId
             startActivity(intent)
         }
 
@@ -200,5 +266,10 @@ class HomeFragment : Fragment() {
                 }
             })
         }
+
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(runnable)
     }
 }

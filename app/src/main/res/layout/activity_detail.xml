@@ -25,19 +25,45 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@android:color/white">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <ImageButton
+                        android:id="@+id/back_button_detail"
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_alignParentStart="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/baseline_arrow_back_24"
+                        android:background="@drawable/bg_card"
+                        android:backgroundTint="@android:color/transparent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Detail Menu"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
 
                 <!-- Food Image Section -->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center"
                     >
 
                     <ImageView
                         android:id="@+id/ivImage"
-                        android:layout_width="match_parent"
+                        android:layout_width="230dp"
                         android:layout_height="230dp"
-                        android:layout_margin="4dp"
-                        android:elevation="4sp"
+                        android:elevation="6dp"
+                        android:layout_margin="12dp"
+                        android:layout_gravity="center"
                         android:background="@drawable/bg_roundedu"
                         android:src="@drawable/ic_nasi_salmon"
                         android:scaleType="fitCenter" />
@@ -49,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="12dp">
 
                     <!-- Title -->
                     <TextView
@@ -106,7 +132,7 @@
                                 android:id="@+id/tvLearnMore"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text=":D"
+                                android:text="With Premium Ingredients"
                                 android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:layout_marginTop="8dp"

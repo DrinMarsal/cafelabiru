@@ -1,4 +1,4 @@
-package com.example.cafelabiru
+package com.example.cafelabiru.menu
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -14,10 +13,16 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.cafelabiru.DetailActivity
+import com.example.cafelabiru.MenuAdapter
+import com.example.cafelabiru.OrderDetailActivity
+import com.example.cafelabiru.OrderManager
+import com.example.cafelabiru.R
 import com.example.cafelabiru.databinding.FragmentMenuBinding
 import com.example.cafelabiru.model.FoodModel
-import com.example.cafelabiru.model.OrderMenuItem
 import com.google.firebase.database.*
+import java.text.NumberFormat
+import java.util.Locale
 
 class MenuFragment : Fragment() {
 
@@ -160,7 +165,9 @@ class MenuFragment : Fragment() {
         }
 
         val tvTotalPrice = binding.cardOrderSummary.findViewById<TextView>(R.id.tvTotalPrice)
-        tvTotalPrice.text = "Total: Rp %.2f".format(totalPrice)
+        val formattedTotal = NumberFormat.getNumberInstance(Locale("in", "ID")).format(totalPrice)
+        tvTotalPrice.text = "Total: Rp $formattedTotal"
+
 
         binding.cardOrderSummary.visibility =
             if (OrderManager.isEmpty()) View.GONE else View.VISIBLE

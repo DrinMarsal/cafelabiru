@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.databinding.ActivityMainBinding
 import com.example.cafelabiru.history.OrderHistoryFragment
 import com.example.cafelabiru.home.HomeFragment
+import com.example.cafelabiru.menu.MenuFragment
 import com.example.cafelabiru.profile.ProfileFragment
 import com.google.firebase.FirebaseApp
 

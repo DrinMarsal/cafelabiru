@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cafelabiru.databinding.ItemMenuBinding
 import com.example.cafelabiru.model.FoodModel
+import java.text.NumberFormat
+import java.util.Locale
 
 class MenuAdapter(private val foodList: List<FoodModel>) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
@@ -23,7 +25,8 @@ class MenuAdapter(private val foodList: List<FoodModel>) : RecyclerView.Adapter<
         val item = foodList[position]
         holder.binding.tvName.text = item.name
         holder.binding.tvDesc.text = item.description
-        holder.binding.tvPrice.text = "Rp %.2f".format(item.price)
+        val formattedTotal = NumberFormat.getNumberInstance(Locale("in", "ID")).format(item.price)
+        holder.binding.tvPrice.text = "Rp $formattedTotal"
 
         Glide.with(holder.itemView.context)
             .load(item.imageUrl)

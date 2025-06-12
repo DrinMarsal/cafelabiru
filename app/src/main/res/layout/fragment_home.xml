@@ -95,7 +95,7 @@
                         android:layout_alignParentEnd="true"
                         android:contentDescription="Promo image"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/img_promo" />
+                        android:src="@drawable/ic_croissant" />
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -139,7 +139,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/delivery" />
+                            app:srcCompat="@drawable/sscooter" />
 
                         <TextView
                             android:id="@+id/textView"
@@ -184,7 +184,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/dinein" />
+                            app:srcCompat="@drawable/ffood" />
 
                         <TextView
                             android:id="@+id/textView3"
@@ -228,7 +228,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/booking" />
+                            app:srcCompat="@drawable/croom" />
 
                         <TextView
                             android:id="@+id/textView4"
@@ -382,6 +382,56 @@
                             android:textSize="12sp" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/recom5"
+                        android:layout_width="115dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_rounded"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_green_paradise_removebg" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:minLines="2"
+                            android:text="Green Paradise"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/recom6"
+                        android:layout_width="115dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_rounded"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_cheese_pizza" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="Signature Cheeselover Pizza"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
                     <!-- Tambahkan Item 2, 3 dst. sesuai gambar -->
                 </LinearLayout>
             </HorizontalScrollView>
@@ -428,7 +478,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/cat1" />
+                            android:src="@drawable/catt1" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -444,7 +494,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/cat2" />
+                            android:src="@drawable/catt2" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -460,7 +510,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/cat3" />
+                            android:src="@drawable/catt3" />
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView

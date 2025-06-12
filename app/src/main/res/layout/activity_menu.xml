@@ -21,7 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
-            android:id="@+id/backButton"
+            android:id="@+id/backButton32"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:background="@android:color/transparent"

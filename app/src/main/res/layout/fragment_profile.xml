@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:padding="24dp"
     android:background="@android:color/white"
+    android:layout_marginTop="24dp"
     >
 
     <LinearLayout
@@ -11,16 +12,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:paddingTop="36dp">
+        android:paddingTop="40dp">
 
         <!-- Avatar -->
         <ImageView
             android:id="@+id/ivAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/labirunobg1"
             android:scaleType="centerCrop"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="18dp"
             android:contentDescription="Avatar"
             android:background="@drawable/circle_background" />
 
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="Awiko"
             android:textStyle="bold"
-            android:textColor="#003366"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:layout_marginBottom="24dp" />
 

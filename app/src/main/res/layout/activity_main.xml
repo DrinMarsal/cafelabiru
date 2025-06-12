@@ -22,6 +22,7 @@
         android:background="@color/color_700"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:paddingTop="4dp"
         app:itemIconTint="@color/color_100"
         app:itemTextColor="@color/color_100"
         app:itemIconSize="40dp"

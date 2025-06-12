@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafelabiru.admin.AdminActivity
@@ -17,16 +20,23 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        val logo: ImageView = findViewById(R.id.splashLogo)
+        val anim = AnimationUtils.loadAnimation(this, R.anim.logo_anim)
+        logo.startAnimation(anim)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            val user = FirebaseAuth.getInstance().currentUser
-            if (user != null) {
-                checkUserRoleAndNavigate(user)
-            } else {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
+        anim.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationEnd(animation: Animation?) {
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null) {
+                    checkUserRoleAndNavigate(user)
+                } else {
+                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                    finish()
+                }
             }
-        }, 2000) // splash 2 detik
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
     }
 
     private fun checkUserRoleAndNavigate(user: FirebaseUser) {
